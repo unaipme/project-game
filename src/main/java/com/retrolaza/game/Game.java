@@ -1,11 +1,13 @@
 package com.retrolaza.game;
 
 import java.awt.Dimension;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -31,7 +33,7 @@ public class Game extends JPanel {
 		return menu;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FontFormatException, IOException {
 		Game game = new Game();
 		
 		game.getMenu().addOption("NAHI DOT JOAKTU");
