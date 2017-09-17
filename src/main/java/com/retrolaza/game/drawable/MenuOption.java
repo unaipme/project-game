@@ -1,23 +1,21 @@
-package com.retrolaza.game.movable;
+package com.retrolaza.game.drawable;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-public class MenuOption implements Drawable {
+public class MenuOption extends Drawable {
 	
-	private String text;
-	private Font font;
-	private int x;
-	private int y;
-	private boolean selected = false;
+	private Text text;
+	//private boolean selected = false;
 	
 	public static final int DEFAULT_SIZE = 34;
 	
-	private BiConsumer<Graphics2D, MenuOption> drawWhenSelected;
+	private Consumer<MenuOption> drawWhenSelected;
+	private Consumer<MenuOption> drawWhenUnselected;
 	
 	public MenuOption(String text, int x, int y) throws FontFormatException, IOException {
 		this(text, x, y, DEFAULT_SIZE);
@@ -28,55 +26,55 @@ public class MenuOption implements Drawable {
 	}
 	
 	public MenuOption(String text, int x, int y, Font font) {
-		this.text = text;
-		this.font = font;
-		this.x = x;
-		this.y = y;
+		this.text = new Text(text, x, y, font);
 	}
 	
 	@Override
 	public void draw(Graphics2D g2d) {
-		if (selected) drawWhenSelected.accept(g2d, this);
-		else {
-			g2d.setFont(font);
-			g2d.drawString(text, x, y);
-		}
+		text.draw(g2d);
 	}
 	
 	public void select() {
-		this.selected = true;
+		//this.selected = true;
+		drawWhenSelected.accept(this);
 	}
 	
 	public void deselect() {
-		this.selected = false;
+		//this.selected = false;
+		drawWhenUnselected.accept(this);
 	}
 	
 	public void changeFontFace(int type, String name) throws FontFormatException, IOException {
-		font = Font.createFont(type, new File(name));
+		text.setFont(Font.createFont(type, new File(name)));
 	}
 	
 	public void changeFontSize(int size) {
-		font = font.deriveFont((float) size);
+		text.setFont(text.getFont().deriveFont((float) size));
 	}
 	
-	public void setDrawWhenSelected(BiConsumer<Graphics2D, MenuOption> response) {
-		this.drawWhenSelected = response;
+	public void setSelectionAnimations(Consumer<MenuOption> selected, Consumer<MenuOption> unselected) {
+		this.drawWhenSelected = selected;
+		this.drawWhenUnselected = unselected;
 	}
 	
 	public Font getFont() {
-		return this.font;
+		return text.getFont();
 	}
 	
-	public String getText() {
-		return this.text;
+	public String getTextString() {
+		return text.getText();
+	}
+	
+	public Text getText() {
+		return text;
 	}
 	
 	public int getX() {
-		return this.x;
+		return text.getX();
 	}
 	
 	public int getY() {
-		return this.y;
+		return text.getY();
 	}
 	
 }

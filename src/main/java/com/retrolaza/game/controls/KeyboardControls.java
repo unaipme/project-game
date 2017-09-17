@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import com.retrolaza.game.Game;
+import com.retrolaza.game.GameScreen;
 
 public class KeyboardControls implements KeyListener {
 	
-	private Map<Integer, Consumer<Game>> responses = new HashMap<>();
-	private Game game;
+	private Map<Integer, Consumer<GameScreen>> responses = new HashMap<>();
+	private GameScreen game;
 	
-	public KeyboardControls(Game game) {
+	public KeyboardControls(GameScreen game) {
 		this.game = game;
 	}
 
@@ -40,23 +40,13 @@ public class KeyboardControls implements KeyListener {
 	public class Adder {
 		
 		private Integer event;
-		private Consumer<Game> function = (g) -> {};
+		//private Consumer<Drawable> function = (g) -> {};
 		
 		Adder(int event) {
-			and(event);
-		}
-		
-		public Adder and(int event) {
 			this.event = event;
-			return this;
 		}
 		
-		public Adder then(Consumer<Game> function) {
-			this.function = function;
-			return this;
-		}
-		
-		public void save() {
+		public void then(Consumer<GameScreen> function) {
 			responses.put(event, function);
 		}
 		
