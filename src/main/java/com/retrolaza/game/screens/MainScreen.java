@@ -21,8 +21,9 @@ public class MainScreen extends GameScreen {
 	public MainScreen(Game game) throws FontFormatException, IOException {
 		super(game, null);
 		menu = new Menu(30, 60);
+		menu.setSeparation(20);
 		menu.addOption("Jokatu");
-		menu.addOption("Ranking-a");
+		menu.addOption("Rankinga");
 		menu.addOption("Aukerak");
 		menu.addOption("Irten");
 		addDrawable(DR_MENU, menu);
@@ -37,8 +38,8 @@ public class MainScreen extends GameScreen {
 			Menu menu = (Menu) m.getDrawable(MainScreen.DR_MENU);
 			switch (menu.getSelectedOption()) {
 			case 1:
-				m.setHiding(true);
-				rankingScreen.setHiding(false);
+				m.hide();
+				((MainScreen) m).getRankingScreen().show();
 				break;
 			case 3:
 				System.exit(0);
@@ -48,7 +49,7 @@ public class MainScreen extends GameScreen {
 			}
 		});
 		
-		setHiding(false);
+		show();
 	}
 	
 	public void setUp() {

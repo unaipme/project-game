@@ -10,10 +10,15 @@ public abstract class GameScreen extends GameChild {
 	}
 	
 	@Override
-	public void setHiding(boolean hiding) {
-		if (hiding) turnOff();
-		else setUp();
-		this.hiding = hiding;
+	public void hide() {
+		super.hide();
+		turnOff();
+	}
+	
+	@Override
+	public void show() {
+		super.show();
+		setUp();
 	}
 	
 	public GameScreen getParent() {

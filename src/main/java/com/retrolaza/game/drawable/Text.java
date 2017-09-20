@@ -33,8 +33,10 @@ public class Text extends Drawable {
 	
 	@Override
 	public void draw(Graphics2D g2d) {
-		g2d.setFont(font);
-		g2d.drawString(text, x, y);
+		if (!isHiding()) {
+			g2d.setFont(font);
+			g2d.drawString(text, x, y);
+		}
 	}
 	
 	public void setFont(Font font) {
@@ -63,6 +65,10 @@ public class Text extends Drawable {
 	
 	public String getText() {
 		return text;
+	}
+	
+	public void setText(String text) {
+		this.text = text;
 	}
 	
 }

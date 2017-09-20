@@ -1,6 +1,5 @@
 package com.retrolaza.game;
 
-import java.awt.Dimension;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -59,10 +58,9 @@ public class Game extends JPanel {
 		game.setFocusable(true);
 		
 		JFrame frame = new JFrame("project-game");
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.add(game);
-		frame.setSize(screenSize.width, screenSize.height);
-		//frame.setSize(500, 500);
+		//frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+		frame.setSize(500, 500);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

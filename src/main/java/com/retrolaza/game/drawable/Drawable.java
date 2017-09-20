@@ -18,11 +18,15 @@ public abstract class Drawable {
 		return drawables.get(id);
 	}
 	
-	public void setHiding(boolean hiding) {
-		this.hiding = hiding;
+	public void hide() {
+		this.hiding = true;
 	}
 	
-	protected boolean isHiding() {
+	public void show() {
+		this.hiding = false;
+	}
+	
+	public boolean isHiding() {
 		return this.hiding;
 	}
 	

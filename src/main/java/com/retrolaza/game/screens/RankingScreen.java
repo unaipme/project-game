@@ -4,7 +4,6 @@ import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Scanner;
@@ -27,10 +26,11 @@ public class RankingScreen extends GameScreen {
 	
 	private KeyboardControls controls;
 	private Text titleText;
-	private Map<Integer, Text> ranking;
-	private String loadingError;
+	private Text errorText;
+	private int [] titleIds = new int [5];
 	
 	public static final int DR_TITLE = Game.ID.getAndIncrement();
+	public static final int DR_LOAD_ERROR = Game.ID.getAndIncrement();
 	
 	private static final String RANKING_GENERAL_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/ranking";
 
@@ -39,26 +39,41 @@ public class RankingScreen extends GameScreen {
 		
 		controls = new KeyboardControls(this);
 		controls.when(KeyEvent.VK_ESCAPE).then(gs -> {
-			gs.setHiding(true);
-			gs.getParent().setHiding(false);
+			gs.hide();
+			gs.getParent().show();
 		});
 		
 		titleText = new Text("RANKING", 30, 30);
 		addDrawable(DR_TITLE, titleText);
 		
-		loadRanking();
+		errorText = new Text("", 30, 75);
+		errorText.hide();
+		addDrawable(DR_LOAD_ERROR, errorText);
 		
-		this.hiding = true;
+		for (int i=0; i<5; i++) {
+			Text t = new Text("", 30, 60 + i * 30);
+			t.hide();
+			int id = Game.ID.getAndIncrement();
+			titleIds[i] = id;
+			drawables.put(id, t);
+		}
+		
+		hide();
 	}
 
 	@Override
 	public void setUp() {
 		game().addKeyListener(controls);
+		loadRanking();
 	}
 
 	@Override
 	public void turnOff() {
 		game().removeKeyListener(controls);
+		errorText.hide();
+		for (int i=0; i<5; i++) {
+			getDrawable(titleIds[i]).hide();
+		}
 	}
 	
 	@Override
@@ -66,10 +81,16 @@ public class RankingScreen extends GameScreen {
 		super.draw(g2d);
 	}
 	
+	private void activateError(String err) {
+		for (int i=0; i<5; i++) {
+			getDrawable(titleIds[i]).hide();
+		}
+		errorText.setText(err);
+		errorText.show();
+	}
+	
 	@SuppressWarnings("unchecked")
-	private void loadRanking() throws FontFormatException {
-		ranking = new HashMap<>();
-		
+	private void loadRanking() {
 		HttpClient http = HttpClientBuilder.create().build();
 		HttpGet request = new HttpGet(RANKING_GENERAL_URL);
 		try {
@@ -83,15 +104,14 @@ public class RankingScreen extends GameScreen {
 			while (objectList.hasNext()) {
 				Map<String, Object> info = (Map<String, Object>) objectList.next();
 				Record r = new Record().withPosition((Integer) info.get("position")).withScore((Integer) info.get("score")).withUsername(info.get("username").toString());
-				Text t = new Text(String.format("%s %d", r.getUsername(), r.getScore()), 30, 60 + i * 30);
-				int id = Game.ID.getAndIncrement();
-				ranking.put(id, t);
-				addDrawable(id, t);
+				Text t = (Text) drawables.get(titleIds[i]);
+				t.setText(String.format("%s %d", r.getUsername(), r.getScore()));
+				t.show();
 				i++;
 			}
-		} catch (IOException e) {
-			loadingError = "Akats bat gertatu da";
-			e.printStackTrace();
+		} catch (Exception e) {
+			activateError("Akats bat gertatu da");
+			System.err.println(e.getLocalizedMessage());
 		}
 	}
 

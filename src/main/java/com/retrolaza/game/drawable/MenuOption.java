@@ -5,27 +5,23 @@ import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class MenuOption extends Drawable {
 	
 	private Text text;
 	//private boolean selected = false;
 	
-	public static final int DEFAULT_SIZE = 34;
+	public static final int DEFAULT_SIZE = 35;
 	
-	private Consumer<MenuOption> drawWhenSelected;
-	private Consumer<MenuOption> drawWhenUnselected;
-	
-	public MenuOption(String text, int x, int y) throws FontFormatException, IOException {
-		this(text, x, y, DEFAULT_SIZE);
+	public MenuOption(Menu menu, String text, int x, int y) throws FontFormatException, IOException {
+		this(menu, text, x, y, DEFAULT_SIZE);
 	}
 	
-	public MenuOption(String text, int x, int y, int size) throws FontFormatException, IOException {
-		this(text, x, y, Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/blocktopia.ttf")).deriveFont((float) size));
+	public MenuOption(Menu menu, String text, int x, int y, int size) throws FontFormatException, IOException {
+		this(menu, text, x, y, Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/blocktopia.ttf")).deriveFont((float) size));
 	}
 	
-	public MenuOption(String text, int x, int y, Font font) {
+	public MenuOption(Menu menu, String text, int x, int y, Font font) {
 		this.text = new Text(text, x, y, font);
 	}
 	
@@ -34,27 +30,12 @@ public class MenuOption extends Drawable {
 		text.draw(g2d);
 	}
 	
-	public void select() {
-		//this.selected = true;
-		drawWhenSelected.accept(this);
-	}
-	
-	public void deselect() {
-		//this.selected = false;
-		drawWhenUnselected.accept(this);
-	}
-	
-	public void changeFontFace(int type, String name) throws FontFormatException, IOException {
+	public void setFontFace(int type, String name) throws FontFormatException, IOException {
 		text.setFont(Font.createFont(type, new File(name)));
 	}
 	
-	public void changeFontSize(int size) {
+	public void setFontSize(int size) {
 		text.setFont(text.getFont().deriveFont((float) size));
-	}
-	
-	public void setSelectionAnimations(Consumer<MenuOption> selected, Consumer<MenuOption> unselected) {
-		this.drawWhenSelected = selected;
-		this.drawWhenUnselected = unselected;
 	}
 	
 	public Font getFont() {
@@ -73,8 +54,16 @@ public class MenuOption extends Drawable {
 		return text.getX();
 	}
 	
+	public void setX(int x) {
+		text.setX(x);
+	}
+	
 	public int getY() {
 		return text.getY();
+	}
+	
+	public void setY(int y) {
+		text.setY(y);
 	}
 	
 }
