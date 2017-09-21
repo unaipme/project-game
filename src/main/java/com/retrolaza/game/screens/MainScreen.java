@@ -20,8 +20,8 @@ public class MainScreen extends GameScreen {
 	
 	public MainScreen(Game game) throws FontFormatException, IOException {
 		super(game, null);
-		menu = new Menu(30, 60);
-		menu.setSeparation(20);
+		menu = new Menu(100, 230);
+		menu.setSeparation(60);
 		menu.addOption("Jokatu");
 		menu.addOption("Rankinga");
 		menu.addOption("Aukerak");

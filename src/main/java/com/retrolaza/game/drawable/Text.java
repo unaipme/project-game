@@ -14,7 +14,7 @@ public class Text extends Drawable {
 	private int x;
 	private int y;
 	
-	public static final int DEFAULT_SIZE = 34;
+	public static final int DEFAULT_SIZE = 80;
 	
 	public Text(String text, int x, int y) throws FontFormatException, IOException {
 		this(text, x, y, DEFAULT_SIZE);

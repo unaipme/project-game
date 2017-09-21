@@ -54,7 +54,7 @@ public class RankingScreen extends GameScreen {
 		setBackgroundImage("res/img/background.png");
 		
 		for (int i=0; i<5; i++) {
-			Text t = new Text("", 30, 60 + i * 30);
+			Text t = new Text("", 30, 60 + i * (Text.DEFAULT_SIZE + 30));
 			t.hide();
 			int id = Game.ID.getAndIncrement();
 			titleIds[i] = id;

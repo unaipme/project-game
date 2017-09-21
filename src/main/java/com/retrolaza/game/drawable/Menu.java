@@ -13,7 +13,7 @@ public class Menu extends Drawable {
 	private int y;
 	private int selected;
 	private int separation;
-	private static final int SELECTED_OPT_SIZE = 55;
+	private static final int SELECTED_OPT_SIZE = 85;
 	
 	public Menu(int x, int y) {
 		this.x = x;
