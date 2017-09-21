@@ -1,22 +1,26 @@
 package com.retrolaza.game.screens;
 
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
 import com.retrolaza.game.controls.KeyboardControls;
+import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Menu;
 
 public class MainScreen extends GameScreen {
 	
 	private Menu menu;
 	private KeyboardControls controls;
+	private Image gameLogo;
 	
 	private RankingScreen rankingScreen;
 	
 	public static final int DR_MENU = Game.ID.getAndIncrement();
+	public static final int DR_LOGO = Game.ID.getAndIncrement();
 	
 	public MainScreen(Game game) throws FontFormatException, IOException {
 		super(game, null);
@@ -30,6 +34,10 @@ public class MainScreen extends GameScreen {
 		
 		rankingScreen = new RankingScreen(game, this);
 		Game.addScreen(rankingScreen);
+		
+		gameLogo = new Image("res/img/retro_game.gif", game(), 540, 240);
+		gameLogo.scale(500, -1, Image.SCALE_SMOOTH);
+		addDrawable(DR_LOGO, gameLogo);
 		
 		setBackgroundImage("res/img/background.png");
 		
@@ -52,6 +60,11 @@ public class MainScreen extends GameScreen {
 		});
 		
 		show();
+	}
+	
+	@Override
+	public void draw(Graphics2D g2d) {
+		super.draw(g2d);
 	}
 	
 	public void setUp() {

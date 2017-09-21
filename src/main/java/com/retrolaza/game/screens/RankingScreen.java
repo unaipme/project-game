@@ -33,6 +33,8 @@ public class RankingScreen extends GameScreen {
 	public static final int DR_LOAD_ERROR = Game.ID.getAndIncrement();
 	
 	private static final String RANKING_GENERAL_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/ranking";
+	
+	private static final int TEXT_SIZE = 60;
 
 	public RankingScreen(Game game, MainScreen mainScreen) throws FontFormatException, IOException {
 		super(game, mainScreen);
@@ -43,18 +45,18 @@ public class RankingScreen extends GameScreen {
 			gs.getParent().show();
 		});
 		
-		titleText = new Text("RANKING", 30, 30);
+		titleText = new Text("RANKING", 30, 70);
 		titleText.show();
 		addDrawable(DR_TITLE, titleText);
 		
-		errorText = new Text("", 30, 75);
+		errorText = new Text("", 30, 150);
 		errorText.show();
 		addDrawable(DR_LOAD_ERROR, errorText);
 		
 		setBackgroundImage("res/img/background.png");
 		
 		for (int i=0; i<5; i++) {
-			Text t = new Text("", 30, 60 + i * (Text.DEFAULT_SIZE + 30));
+			Text t = new Text("", 30, 120 + i * (TEXT_SIZE + 30), TEXT_SIZE);
 			t.hide();
 			int id = Game.ID.getAndIncrement();
 			titleIds[i] = id;
