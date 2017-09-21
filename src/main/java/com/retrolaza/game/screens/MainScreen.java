@@ -31,6 +31,8 @@ public class MainScreen extends GameScreen {
 		rankingScreen = new RankingScreen(game, this);
 		Game.addScreen(rankingScreen);
 		
+		setBackgroundImage("res/img/background.png");
+		
 		controls = new KeyboardControls(this);
 		controls.when(KeyEvent.VK_DOWN).then(m -> ((Menu) m.getDrawable(MainScreen.DR_MENU)).nextSelected());
 		controls.when(KeyEvent.VK_UP).then(m -> ((Menu) m.getDrawable(MainScreen.DR_MENU)).previousSelected());

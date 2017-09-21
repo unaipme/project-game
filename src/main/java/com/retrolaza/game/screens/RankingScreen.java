@@ -44,11 +44,14 @@ public class RankingScreen extends GameScreen {
 		});
 		
 		titleText = new Text("RANKING", 30, 30);
+		titleText.show();
 		addDrawable(DR_TITLE, titleText);
 		
 		errorText = new Text("", 30, 75);
-		errorText.hide();
+		errorText.show();
 		addDrawable(DR_LOAD_ERROR, errorText);
+		
+		setBackgroundImage("res/img/background.png");
 		
 		for (int i=0; i<5; i++) {
 			Text t = new Text("", 30, 60 + i * 30);
@@ -63,8 +66,13 @@ public class RankingScreen extends GameScreen {
 
 	@Override
 	public void setUp() {
+		errorText.setText("Cargando");
+		errorText.show();
 		game().addKeyListener(controls);
-		loadRanking();
+		new Thread(() -> {
+			loadRanking();
+			errorText.setText("");
+		}).start();
 	}
 
 	@Override
@@ -109,6 +117,7 @@ public class RankingScreen extends GameScreen {
 				t.show();
 				i++;
 			}
+			System.out.println("Rankinga ondo kargatu da");
 		} catch (Exception e) {
 			activateError("Akats bat gertatu da");
 			System.err.println(e.getLocalizedMessage());

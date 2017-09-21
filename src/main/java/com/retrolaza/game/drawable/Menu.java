@@ -23,7 +23,7 @@ public class Menu extends Drawable {
 	}
 	
 	public void addOption(String text) throws FontFormatException, IOException {
-		MenuOption option = new MenuOption(this, text, x, y + options.size() * (MenuOption.DEFAULT_SIZE + this.separation));
+		MenuOption option = new MenuOption(text, x, y + options.size() * (MenuOption.DEFAULT_SIZE + this.separation));
 		options.add(option);
 		if (options.size() == 1) nextSelected();
 	}

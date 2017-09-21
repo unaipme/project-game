@@ -6,28 +6,33 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 
+import com.retrolaza.game.Game;
+
 public class MenuOption extends Drawable {
 	
 	private Text text;
 	//private boolean selected = false;
 	
+	private final static int DR_TEXT = Game.ID.getAndIncrement();
+	
 	public static final int DEFAULT_SIZE = 35;
 	
-	public MenuOption(Menu menu, String text, int x, int y) throws FontFormatException, IOException {
-		this(menu, text, x, y, DEFAULT_SIZE);
+	public MenuOption(String text, int x, int y) throws FontFormatException, IOException {
+		this(text, x, y, DEFAULT_SIZE);
 	}
 	
-	public MenuOption(Menu menu, String text, int x, int y, int size) throws FontFormatException, IOException {
-		this(menu, text, x, y, Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/blocktopia.ttf")).deriveFont((float) size));
+	public MenuOption(String text, int x, int y, int size) throws FontFormatException, IOException {
+		this(text, x, y, Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/blocktopia.ttf")).deriveFont((float) size));
 	}
 	
-	public MenuOption(Menu menu, String text, int x, int y, Font font) {
+	public MenuOption(String text, int x, int y, Font font) {
 		this.text = new Text(text, x, y, font);
+		addDrawable(DR_TEXT, this.text);
 	}
 	
 	@Override
 	public void draw(Graphics2D g2d) {
-		text.draw(g2d);
+		super.draw(g2d);
 	}
 	
 	public void setFontFace(int type, String name) throws FontFormatException, IOException {

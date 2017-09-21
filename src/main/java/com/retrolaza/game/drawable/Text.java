@@ -1,5 +1,6 @@
 package com.retrolaza.game.drawable;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
@@ -35,6 +36,7 @@ public class Text extends Drawable {
 	public void draw(Graphics2D g2d) {
 		if (!isHiding()) {
 			g2d.setFont(font);
+			g2d.setColor(Color.WHITE);
 			g2d.drawString(text, x, y);
 		}
 	}

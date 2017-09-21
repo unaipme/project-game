@@ -60,7 +60,7 @@ public class Game extends JPanel {
 		JFrame frame = new JFrame("project-game");
 		frame.add(game);
 		//frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-		frame.setSize(500, 500);
+		frame.setSize(1200, 900);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
