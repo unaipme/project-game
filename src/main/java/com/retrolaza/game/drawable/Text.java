@@ -13,6 +13,8 @@ public class Text extends Drawable {
 	private Font font;
 	private int x;
 	private int y;
+	private Color color = Color.WHITE;
+	private int size;
 	
 	public static final int DEFAULT_SIZE = 80;
 	
@@ -22,6 +24,7 @@ public class Text extends Drawable {
 	
 	public Text(String text, int x, int y, int size) throws FontFormatException, IOException {
 		this(text, x, y, Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/blocktopia.ttf")).deriveFont((float) size));
+		this.size = size;
 	}
 	
 	public Text(String text, int x, int y, Font font) {
@@ -36,7 +39,7 @@ public class Text extends Drawable {
 	public void draw(Graphics2D g2d) {
 		if (!isHiding()) {
 			g2d.setFont(font);
-			g2d.setColor(Color.WHITE);
+			g2d.setColor(color);
 			g2d.drawString(text, x, y);
 		}
 	}
@@ -74,7 +77,16 @@ public class Text extends Drawable {
 	}
 	
 	public void setSize(int size) {
+		this.size = size;
 		font = font.deriveFont((float) size);
+	}
+	
+	public int getSize() {
+		return this.size;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 }

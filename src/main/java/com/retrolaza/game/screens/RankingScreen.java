@@ -1,7 +1,6 @@
 package com.retrolaza.game.screens;
 
 import java.awt.FontFormatException;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ListIterator;
@@ -17,8 +16,8 @@ import com.jayway.jsonpath.JsonPath;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
 import com.retrolaza.game.controls.KeyboardControls;
+import com.retrolaza.game.drawable.Table;
 import com.retrolaza.game.drawable.Text;
-import com.retrolaza.game.screens.data.Record;
 
 import net.minidev.json.JSONArray;
 
@@ -27,14 +26,13 @@ public class RankingScreen extends GameScreen {
 	private KeyboardControls controls;
 	private Text titleText;
 	private Text errorText;
-	private int [] titleIds = new int [5];
+	private Table table;
 	
 	public static final int DR_TITLE = Game.ID.getAndIncrement();
 	public static final int DR_LOAD_ERROR = Game.ID.getAndIncrement();
+	public static final int DR_TABLE = Game.ID.getAndIncrement();
 	
 	private static final String RANKING_GENERAL_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/ranking";
-	
-	private static final int TEXT_SIZE = 60;
 
 	public RankingScreen(Game game, MainScreen mainScreen) throws FontFormatException, IOException {
 		super(game, mainScreen);
@@ -45,35 +43,34 @@ public class RankingScreen extends GameScreen {
 			gs.getParent().show();
 		});
 		
-		titleText = new Text("RANKING", 30, 70);
+		titleText = new Text("RANKING", 470, 100);
 		titleText.show();
 		addDrawable(DR_TITLE, titleText);
 		
-		errorText = new Text("", 30, 150);
+		errorText = new Text("", 510, 150);
+		errorText.setSize(45);
 		errorText.show();
 		addDrawable(DR_LOAD_ERROR, errorText);
 		
 		setBackground("res/img/background.png");
 		
-		for (int i=0; i<5; i++) {
-			Text t = new Text("", 30, 120 + i * (TEXT_SIZE + 30), TEXT_SIZE);
-			t.hide();
-			int id = Game.ID.getAndIncrement();
-			titleIds[i] = id;
-			drawables.put(id, t);
-		}
+		table = Table.create(215, 200, 3).withWidth(70).inColumn(0)
+										.withWidth(500).inColumn(1)
+										.withWidth(200).inColumn(2)
+										.build();
+		drawables.put(DR_TABLE, table);
+		table.hide();
 		
 		hide();
 	}
 
 	@Override
 	public void setUp() {
-		errorText.setText("Cargando");
+		errorText.setText("KARGATZEN");
 		errorText.show();
 		game().addKeyListener(controls);
 		new Thread(() -> {
 			loadRanking();
-			errorText.setText("");
 		}).start();
 	}
 
@@ -81,22 +78,14 @@ public class RankingScreen extends GameScreen {
 	public void turnOff() {
 		game().removeKeyListener(controls);
 		errorText.hide();
-		for (int i=0; i<5; i++) {
-			getDrawable(titleIds[i]).hide();
-		}
-	}
-	
-	@Override
-	public void draw(Graphics2D g2d) {
-		super.draw(g2d);
+		table.hide();
 	}
 	
 	private void activateError(String err) {
-		for (int i=0; i<5; i++) {
-			getDrawable(titleIds[i]).hide();
-		}
-		errorText.setText(err);
-		errorText.show();
+		Text text = ((Text) drawables.get(DR_LOAD_ERROR));
+		text.setText(err);
+		text.setX(385);
+		table.hide();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -110,15 +99,12 @@ public class RankingScreen extends GameScreen {
 			scanner.close();
 			JSONArray array = JsonPath.read(json, "$[*]");
 			ListIterator<Object> objectList = array.listIterator();
-			int i = 0;
 			while (objectList.hasNext()) {
 				Map<String, Object> info = (Map<String, Object>) objectList.next();
-				Record r = new Record().withPosition((Integer) info.get("position")).withScore((Integer) info.get("score")).withUsername(info.get("username").toString());
-				Text t = (Text) drawables.get(titleIds[i]);
-				t.setText(String.format("%s %d", r.getUsername(), r.getScore()));
-				t.show();
-				i++;
+				table.withRow(info.get("position"), info.get("username"), info.get("score"));
 			}
+			errorText.setText("");
+			table.show();
 			System.out.println("Rankinga ondo kargatu da");
 		} catch (Exception e) {
 			activateError("Akats bat gertatu da");
