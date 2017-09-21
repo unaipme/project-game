@@ -22,6 +22,8 @@ public class MainScreen extends GameScreen {
 	private Image escButton;
 	private Text arrowInstructions;
 	private Image arrowButton;
+	private Text enterInstructions;
+	private Image enterButton;
 	
 	private RankingScreen rankingScreen;
 	
@@ -32,6 +34,8 @@ public class MainScreen extends GameScreen {
 	public static final int DR_ESC_BUTTON = Game.ID.getAndIncrement();
 	public static final int DR_ARROW_TEXT = Game.ID.getAndIncrement();
 	public static final int DR_ARROW_BUTTON = Game.ID.getAndIncrement();
+	public static final int DR_ENTER_TEXT = Game.ID.getAndIncrement();
+	public static final int DR_ENTER_BUTTON = Game.ID.getAndIncrement();
 	
 	public MainScreen(Game game) throws FontFormatException, IOException {
 		super(game, null);
@@ -65,6 +69,14 @@ public class MainScreen extends GameScreen {
 		arrowInstructions = new Text("Aukeretan mugitzeko", 280, 690);
 		arrowInstructions.setSize(20);
 		addDrawable(DR_ARROW_TEXT, arrowInstructions);
+		
+		enterButton = new Image("res/img/teclado_enter.png", game(), 475, 650);
+		enterButton.scale(-1, 50, Image.SCALE_SMOOTH);
+		addDrawable(DR_ENTER_BUTTON, enterButton);
+		
+		enterInstructions = new Text("Aukeratu", 540, 690);
+		enterInstructions.setSize(20);
+		addDrawable(DR_ENTER_TEXT, enterInstructions);
 		
 		setBackground("res/img/background.png");
 		
