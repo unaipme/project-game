@@ -16,6 +16,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
 import com.retrolaza.game.controls.KeyboardControls;
+import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Table;
 import com.retrolaza.game.drawable.Text;
 
@@ -27,10 +28,16 @@ public class RankingScreen extends GameScreen {
 	private Text titleText;
 	private Text errorText;
 	private Table table;
+
+	private Text escInstructions;
+	private Image escButton;
 	
 	public static final int DR_TITLE = Game.ID.getAndIncrement();
 	public static final int DR_LOAD_ERROR = Game.ID.getAndIncrement();
 	public static final int DR_TABLE = Game.ID.getAndIncrement();
+
+	public static final int DR_ESC_TEXT = Game.ID.getAndIncrement();
+	public static final int DR_ESC_BUTTON = Game.ID.getAndIncrement();
 	
 	private static final String RANKING_GENERAL_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/ranking";
 
@@ -51,6 +58,14 @@ public class RankingScreen extends GameScreen {
 		errorText.setSize(45);
 		errorText.show();
 		addDrawable(DR_LOAD_ERROR, errorText);
+		
+		escButton = new Image("res/img/teclado_esc.png", game(), 10, 650);
+		escButton.scale(-1, 50, Image.SCALE_SMOOTH);
+		addDrawable(DR_ESC_BUTTON, escButton);
+		
+		escInstructions = new Text("Ateratzeko", 70, 690);
+		escInstructions.setSize(20);
+		addDrawable(DR_ESC_TEXT, escInstructions);
 		
 		setBackground("res/img/background.png");
 		
