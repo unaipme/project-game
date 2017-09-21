@@ -5,12 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
-import com.retrolaza.game.audio.Music;
 import com.retrolaza.game.controls.KeyboardControls;
 import com.retrolaza.game.drawable.AnimatedImage;
 import com.retrolaza.game.drawable.Image;
@@ -30,9 +26,8 @@ public class MainScreen extends GameScreen {
 	private Text enterInstructions;
 	private Image enterButton;
 	
-	private Music music;
-	
 	private RankingScreen rankingScreen;
+	private OptionsScreen optionsScreen;
 	
 	public static final int DR_MENU = Game.ID.getAndIncrement();
 	public static final int DR_LOGO = Game.ID.getAndIncrement();
@@ -46,6 +41,7 @@ public class MainScreen extends GameScreen {
 	
 	public MainScreen(Game game) throws FontFormatException, IOException {
 		super(game, null);
+		
 		menu = new Menu(100, 230);
 		menu.setSeparation(60);
 		menu.addOption("Jokatu");
@@ -56,6 +52,9 @@ public class MainScreen extends GameScreen {
 		
 		rankingScreen = new RankingScreen(game, this);
 		Game.addScreen(rankingScreen);
+		
+		optionsScreen = new OptionsScreen(game, this);
+		Game.addScreen(optionsScreen);
 		
 		gameLogo = new AnimatedImage("res/img/retro_game.gif", game(), 480, 240);
 		addDrawable(DR_LOGO, gameLogo);
@@ -83,27 +82,25 @@ public class MainScreen extends GameScreen {
 		enterInstructions = new Text("Aukeratu", 540, 690);
 		enterInstructions.setSize(20);
 		addDrawable(DR_ENTER_TEXT, enterInstructions);
-		
-		try {
-			music = new Music("res/music/8_Bit_Dungeon_Boss.wav").unlimitedLoop();
-			music.start();
-		} catch (UnsupportedAudioFileException | LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		game().setMusic("res/music/8_Bit_Dungeon_Boss.wav");
+		game().getMusic().start();
 		
 		setBackground("res/img/background.png");
 		
 		controls = new KeyboardControls(this);
-		controls.when(KeyEvent.VK_DOWN).then(m -> ((Menu) m.getDrawable(MainScreen.DR_MENU)).nextSelected());
-		controls.when(KeyEvent.VK_UP).then(m -> ((Menu) m.getDrawable(MainScreen.DR_MENU)).previousSelected());
+		controls.when(KeyEvent.VK_DOWN).then(m -> ((Menu) m.getDrawable(DR_MENU)).nextSelected());
+		controls.when(KeyEvent.VK_UP).then(m -> ((Menu) m.getDrawable(DR_MENU)).previousSelected());
 		controls.when(KeyEvent.VK_ESCAPE).then(m -> System.exit(0));
 		controls.when(KeyEvent.VK_ENTER).then(m -> {
-			Menu menu = (Menu) m.getDrawable(MainScreen.DR_MENU);
-			switch (menu.getSelectedOption()) {
+			switch (((Menu) m.getDrawable(DR_MENU)).getSelectedOption()) {
 			case 1:
 				m.hide();
 				((MainScreen) m).getRankingScreen().show();
+				break;
+			case 2:
+				m.hide();
+				((MainScreen) m).getOptionsScreen().show();
 				break;
 			case 3:
 				System.exit(0);
@@ -131,6 +128,10 @@ public class MainScreen extends GameScreen {
 	
 	public RankingScreen getRankingScreen() {
 		return rankingScreen;
+	}
+	
+	public OptionsScreen getOptionsScreen() {
+		return optionsScreen;
 	}
 	
 }

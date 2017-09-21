@@ -10,15 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.retrolaza.game.audio.Music;
 import com.retrolaza.game.screens.MainScreen;
 
 @SuppressWarnings("serial")
 public class Game extends JPanel {
 	
 	private MainScreen menu;
+
+	private Music music;
 	
 	public final static int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
 	public final static int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -67,6 +72,19 @@ public class Game extends JPanel {
 	
 	public static void addScreen(GameScreen screen) {
 		screens.add(screen);
+	}
+	
+	public void setMusic(String file) {
+		try {
+			this.music = new Music(file).unlimitedLoop();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public Music getMusic() {
+		return this.music;
 	}
 
 }

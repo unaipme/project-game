@@ -63,7 +63,7 @@ public class RankingScreen extends GameScreen {
 		escButton.scale(-1, 50, Image.SCALE_SMOOTH);
 		addDrawable(DR_ESC_BUTTON, escButton);
 		
-		escInstructions = new Text("Ateratzeko", 70, 690);
+		escInstructions = new Text("Bueltatzeko", 70, 690);
 		escInstructions.setSize(20);
 		addDrawable(DR_ESC_TEXT, escInstructions);
 		
