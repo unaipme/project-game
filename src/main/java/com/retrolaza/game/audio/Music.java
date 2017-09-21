@@ -19,12 +19,14 @@ public class Music {
 		clip.open(ais);
 	}
 	
-	public void unlimitedLoop() {
+	public Music unlimitedLoop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		return this;
 	}
 	
-	public void playOnce() {
+	public Music playOnce() {
 		clip.loop(0);
+		return this;
 	}
 	
 	public void stop() {

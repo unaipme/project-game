@@ -5,9 +5,14 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
+import com.retrolaza.game.audio.Music;
 import com.retrolaza.game.controls.KeyboardControls;
+import com.retrolaza.game.drawable.AnimatedImage;
 import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Menu;
 import com.retrolaza.game.drawable.Text;
@@ -16,7 +21,7 @@ public class MainScreen extends GameScreen {
 	
 	private Menu menu;
 	private KeyboardControls controls;
-	private Image gameLogo;
+	private AnimatedImage gameLogo;
 	
 	private Text escInstructions;
 	private Image escButton;
@@ -24,6 +29,8 @@ public class MainScreen extends GameScreen {
 	private Image arrowButton;
 	private Text enterInstructions;
 	private Image enterButton;
+	
+	private Music music;
 	
 	private RankingScreen rankingScreen;
 	
@@ -50,8 +57,7 @@ public class MainScreen extends GameScreen {
 		rankingScreen = new RankingScreen(game, this);
 		Game.addScreen(rankingScreen);
 		
-		gameLogo = new Image("res/img/retro_game.gif", game(), 540, 240);
-		gameLogo.scale(500, -1, Image.SCALE_SMOOTH);
+		gameLogo = new AnimatedImage("res/img/retro_game.gif", game(), 480, 240);
 		addDrawable(DR_LOGO, gameLogo);
 		
 		escButton = new Image("res/img/teclado_esc.png", game(), 10, 650);
@@ -77,6 +83,14 @@ public class MainScreen extends GameScreen {
 		enterInstructions = new Text("Aukeratu", 540, 690);
 		enterInstructions.setSize(20);
 		addDrawable(DR_ENTER_TEXT, enterInstructions);
+		
+		try {
+			music = new Music("res/music/8_Bit_Dungeon_Boss.wav").unlimitedLoop();
+			music.start();
+		} catch (UnsupportedAudioFileException | LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		setBackground("res/img/background.png");
 		
