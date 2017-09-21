@@ -13,10 +13,12 @@ public class MainScreen extends GameScreen {
 	
 	private Menu menu;
 	private KeyboardControls controls;
+	private Image gameLogo;
 	
 	private RankingScreen rankingScreen;
 	
 	public static final int DR_MENU = Game.ID.getAndIncrement();
+	public static final int DR_LOGO = Game.ID.getAndIncrement();
 	
 	public MainScreen(Game game) throws FontFormatException, IOException {
 		super(game, null);
@@ -31,7 +33,11 @@ public class MainScreen extends GameScreen {
 		rankingScreen = new RankingScreen(game, this);
 		Game.addScreen(rankingScreen);
 		
-		setBackgroundImage("res/img/background.png");
+		gameLogo = new Image("res/img/retro_game.gif", game(), 540, 240);
+		gameLogo.scale(500, -1, Image.SCALE_SMOOTH);
+		addDrawable(DR_LOGO, gameLogo);
+		
+		setBackground("res/img/background.png");
 		
 		controls = new KeyboardControls(this);
 		controls.when(KeyEvent.VK_DOWN).then(m -> ((Menu) m.getDrawable(MainScreen.DR_MENU)).nextSelected());

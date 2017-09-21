@@ -1,5 +1,6 @@
 package com.retrolaza.game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
@@ -11,6 +12,7 @@ public abstract class GameScreen extends GameChild {
 	
 	private GameScreen parent;
 	private Image backgroundImage;
+	private Color backgroundColor;
 	private boolean showBackground;
 	
 	public GameScreen(Game g, GameScreen parent) {
@@ -18,6 +20,7 @@ public abstract class GameScreen extends GameChild {
 		this.parent = parent;
 		this.backgroundImage = null;
 		this.showBackground = true;
+		this.backgroundColor = Color.BLACK;
 	}
 	
 	@Override
@@ -36,6 +39,7 @@ public abstract class GameScreen extends GameChild {
 	
 	@Override
 	public void draw(Graphics2D g2d) {
+		if (g2d.getBackground() != this.backgroundColor) game().setBackground(this.backgroundColor);
 		if (showBackground) g2d.drawImage(backgroundImage, 0, 0, game());
 		super.draw(g2d);
 	}
@@ -44,7 +48,11 @@ public abstract class GameScreen extends GameChild {
 		return parent;
 	}
 	
-	public void setBackgroundImage(String file) {
+	public void setBackground(Color color) {
+		this.backgroundColor = color;
+	}
+	
+	public void setBackground(String file) {
 		try {
 			this.backgroundImage = ImageIO.read(new File(file));
 			this.showBackground = true;

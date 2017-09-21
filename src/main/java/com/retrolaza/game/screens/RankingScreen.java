@@ -51,7 +51,7 @@ public class RankingScreen extends GameScreen {
 		errorText.show();
 		addDrawable(DR_LOAD_ERROR, errorText);
 		
-		setBackgroundImage("res/img/background.png");
+		setBackground("res/img/background.png");
 		
 		for (int i=0; i<5; i++) {
 			Text t = new Text("", 30, 60 + i * (Text.DEFAULT_SIZE + 30));
