@@ -73,4 +73,8 @@ public class Text extends Drawable {
 		this.text = text;
 	}
 	
+	public void setSize(int size) {
+		font = font.deriveFont((float) size);
+	}
+	
 }

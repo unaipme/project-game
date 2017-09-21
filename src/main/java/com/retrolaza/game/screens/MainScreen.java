@@ -1,12 +1,14 @@
 package com.retrolaza.game.screens;
 
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
 import com.retrolaza.game.controls.KeyboardControls;
+import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Menu;
 
 public class MainScreen extends GameScreen {
@@ -58,6 +60,11 @@ public class MainScreen extends GameScreen {
 		});
 		
 		show();
+	}
+	
+	@Override
+	public void draw(Graphics2D g2d) {
+		super.draw(g2d);
 	}
 	
 	public void setUp() {
