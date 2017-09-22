@@ -20,12 +20,20 @@ public class OptionsScreen extends GameScreen {
 	private Text escInstructions;
 	private Image escButton;
 	private AnimatedImage gameLogo;
+	private Text arrowInstructions;
+	private Image arrowButton;
+	private Text enterInstructions;
+	private Image enterButton;
 
 	public static final int DR_ESC_TEXT = Game.ID.getAndIncrement();
 	public static final int DR_ESC_BUTTON = Game.ID.getAndIncrement();
 	public static final int DR_TITLE = Game.ID.getAndIncrement();
 	public static final int DR_MENU = Game.ID.getAndIncrement();
 	public static final int DR_LOGO = Game.ID.getAndIncrement();
+	public static final int DR_ARROW_TEXT = Game.ID.getAndIncrement();
+	public static final int DR_ARROW_BUTTON = Game.ID.getAndIncrement();
+	public static final int DR_ENTER_TEXT = Game.ID.getAndIncrement();
+	public static final int DR_ENTER_BUTTON = Game.ID.getAndIncrement();
 	
 	private static final String SONG_1 = "res/music/8_bit_Dungeon_Boss.wav";
 	private static final String SONG_2 = "res/music/Pinball_Spring.wav";
@@ -41,7 +49,7 @@ public class OptionsScreen extends GameScreen {
 		options.addOption("2. abestia");
 		options.addOption("3. abestia");
 		options.addOption("4. abestia");
-		options.addOption("Abestirik ez");
+		options.addOption("Isilik");
 		addDrawable(DR_MENU, options);
 		
 		gameLogo = new AnimatedImage("res/img/retro_game.gif", game(), 480, 240);
@@ -87,6 +95,22 @@ public class OptionsScreen extends GameScreen {
 		escInstructions = new Text("Bueltatzeko", 70, 690);
 		escInstructions.setSize(20);
 		addDrawable(DR_ESC_TEXT, escInstructions);
+		
+		arrowButton = new Image("res/img/teclado_flechas.png", game(), 200, 650);
+		arrowButton.scale(-1, 50, Image.SCALE_SMOOTH);
+		addDrawable(DR_ARROW_BUTTON, arrowButton);
+		
+		arrowInstructions = new Text("Aukeretan mugitzeko", 280, 690);
+		arrowInstructions.setSize(20);
+		addDrawable(DR_ARROW_TEXT, arrowInstructions);
+		
+		enterButton = new Image("res/img/teclado_enter.png", game(), 475, 650);
+		enterButton.scale(-1, 50, Image.SCALE_SMOOTH);
+		addDrawable(DR_ENTER_BUTTON, enterButton);
+		
+		enterInstructions = new Text("Aukeratu", 540, 690);
+		enterInstructions.setSize(20);
+		addDrawable(DR_ENTER_TEXT, enterInstructions);
 		
 		this.setBackground("res/img/background.png");
 		

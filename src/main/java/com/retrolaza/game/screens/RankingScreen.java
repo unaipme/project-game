@@ -105,6 +105,7 @@ public class RankingScreen extends GameScreen {
 	
 	@SuppressWarnings("unchecked")
 	private void loadRanking() {
+		table.clear();
 		HttpClient http = HttpClientBuilder.create().build();
 		HttpGet request = new HttpGet(RANKING_GENERAL_URL);
 		try {

@@ -82,6 +82,10 @@ public class Table extends Drawable {
 		}
 	}
 	
+	public void clear() {
+		data.clear();
+	}
+	
 	public static class Builder {
 		
 		private Table table;
