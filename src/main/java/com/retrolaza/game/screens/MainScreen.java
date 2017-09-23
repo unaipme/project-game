@@ -28,6 +28,7 @@ public class MainScreen extends GameScreen {
 	
 	private RankingScreen rankingScreen;
 	private OptionsScreen optionsScreen;
+	private GameplayScreen gameScreen;
 	
 	public static final int DR_MENU = Game.ID.getAndIncrement();
 	public static final int DR_LOGO = Game.ID.getAndIncrement();
@@ -55,6 +56,9 @@ public class MainScreen extends GameScreen {
 		
 		optionsScreen = new OptionsScreen(game, this);
 		Game.addScreen(optionsScreen);
+		
+		gameScreen = new GameplayScreen(game, this);
+		Game.addScreen(gameScreen);
 		
 		gameLogo = new AnimatedImage("res/img/retro_game.gif", game(), 480, 240);
 		addDrawable(DR_LOGO, gameLogo);
@@ -93,14 +97,19 @@ public class MainScreen extends GameScreen {
 		controls.when(KeyEvent.VK_UP).then(m -> ((Menu) m.getDrawable(DR_MENU)).previousSelected());
 		controls.when(KeyEvent.VK_ESCAPE).then(m -> System.exit(0));
 		controls.when(KeyEvent.VK_ENTER).then(m -> {
+			MainScreen ms = (MainScreen) m;
 			switch (((Menu) m.getDrawable(DR_MENU)).getSelectedOption()) {
+			case 0:
+				ms.hide();
+				ms.getGameScreen().show();
+				break;
 			case 1:
-				m.hide();
-				((MainScreen) m).getRankingScreen().show();
+				ms.hide();
+				ms.getRankingScreen().show();
 				break;
 			case 2:
-				m.hide();
-				((MainScreen) m).getOptionsScreen().show();
+				ms.hide();
+				ms.getOptionsScreen().show();
 				break;
 			case 3:
 				System.exit(0);
@@ -132,6 +141,10 @@ public class MainScreen extends GameScreen {
 	
 	public OptionsScreen getOptionsScreen() {
 		return optionsScreen;
+	}
+	
+	public GameplayScreen getGameScreen() {
+		return gameScreen;
 	}
 	
 }

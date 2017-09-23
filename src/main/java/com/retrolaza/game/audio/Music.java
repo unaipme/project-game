@@ -37,4 +37,8 @@ public class Music {
 		if (!clip.isRunning()) clip.start();
 	}
 	
+	public void reset() {
+		clip.setMicrosecondPosition(0);
+	}
+	
 }
