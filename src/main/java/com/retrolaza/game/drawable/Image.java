@@ -49,7 +49,7 @@ public class Image extends Drawable {
 	@Override
 	public void draw(Graphics2D g2d) {
 		super.draw(g2d);
-		g2d.drawImage(image, x, y, game);
+		if (!isHiding()) g2d.drawImage(image, x, y, game);
 	}
 	
 }

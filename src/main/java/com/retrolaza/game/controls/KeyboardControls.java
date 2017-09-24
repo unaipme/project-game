@@ -30,7 +30,7 @@ public class KeyboardControls implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+		return;
 	}
 	
 	public KeyboardControls.Adder when(int event) {

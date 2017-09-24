@@ -19,6 +19,8 @@ import com.retrolaza.game.controls.KeyboardControls;
 import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Table;
 import com.retrolaza.game.drawable.Text;
+import com.retrolaza.game.drawable.TextField;
+import com.retrolaza.game.exception.PlayerNotFoundException;
 
 import net.minidev.json.JSONArray;
 
@@ -31,6 +33,10 @@ public class RankingScreen extends GameScreen {
 
 	private Text escInstructions;
 	private Image escButton;
+	private Text searchText;
+	private Image searchButton;
+	
+	private TextField textField;
 	
 	public static final int DR_TITLE = Game.ID.getAndIncrement();
 	public static final int DR_LOAD_ERROR = Game.ID.getAndIncrement();
@@ -38,8 +44,12 @@ public class RankingScreen extends GameScreen {
 
 	public static final int DR_ESC_TEXT = Game.ID.getAndIncrement();
 	public static final int DR_ESC_BUTTON = Game.ID.getAndIncrement();
+	public static final int DR_SEARCH_TEXT = Game.ID.getAndIncrement();
+	public static final int DR_SEARCH_BUTTON = Game.ID.getAndIncrement();
 	
-	private static final String RANKING_GENERAL_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/ranking";
+	public static final int DR_TEXT_FIELD = Game.ID.getAndIncrement();
+	
+	private static final String RANKING_GENERAL_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/ranking/";
 
 	public RankingScreen(Game game, MainScreen mainScreen) throws FontFormatException, IOException {
 		super(game, mainScreen);
@@ -48,6 +58,10 @@ public class RankingScreen extends GameScreen {
 		controls.when(KeyEvent.VK_ESCAPE).then(gs -> {
 			gs.hide();
 			gs.getParent().show();
+		});
+		controls.when(KeyEvent.VK_ENTER).then(gs -> {
+			RankingScreen rs = (RankingScreen) gs;
+			new Thread(() -> rs.loadRanking(RANKING_GENERAL_URL + rs.getSearchTerm())).start();
 		});
 		
 		titleText = new Text("RANKING", 470, 100);
@@ -67,14 +81,27 @@ public class RankingScreen extends GameScreen {
 		escInstructions.setSize(20);
 		addDrawable(DR_ESC_TEXT, escInstructions);
 		
+		searchText = new Text("BILATU", 750, 585);
+		searchText.hide();
+		addDrawable(DR_SEARCH_TEXT, searchText);
+		
+		searchButton = new Image("res/img/teclado_enter.png", game(), 680, 535);
+		searchButton.scale(60, -1, Image.SCALE_SMOOTH);
+		searchButton.hide();
+		addDrawable(DR_SEARCH_BUTTON, searchButton);
+		
 		setBackground("res/img/background.png");
 		
-		table = Table.create(215, 200, 3).withWidth(70).inColumn(0)
+		table = Table.create(215, 175, 3).withWidth(70).inColumn(0)
 										.withWidth(500).inColumn(1)
 										.withWidth(200).inColumn(2)
 										.build();
-		drawables.put(DR_TABLE, table);
 		table.hide();
+		addDrawable(DR_TABLE, table);
+		
+		textField = new TextField(215, 520, 8);
+		textField.hide();
+		addDrawable(DR_TEXT_FIELD, textField);
 		
 		hide();
 	}
@@ -84,30 +111,39 @@ public class RankingScreen extends GameScreen {
 		errorText.setText("KARGATZEN");
 		errorText.show();
 		game().addKeyListener(controls);
-		new Thread(() -> {
-			loadRanking();
-		}).start();
+		game().addKeyListener(textField.getControls());
+		new Thread(() -> loadRanking()).start();
 	}
 
 	@Override
 	public void turnOff() {
+		game().removeKeyListener(textField.getControls());
 		game().removeKeyListener(controls);
 		errorText.hide();
 		table.hide();
 	}
 	
 	private void activateError(String err) {
-		Text text = ((Text) drawables.get(DR_LOAD_ERROR));
-		text.setText(err);
-		text.setX(385);
+		errorText.setText(err);
+		errorText.setX((1200 - (err.length() * 20)) / 2);
 		table.hide();
+		searchText.hide();
+		searchButton.hide();
+		textField.hide();
+	}
+	
+	public void loadRanking() {
+		loadRanking(RANKING_GENERAL_URL);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void loadRanking() {
+	public void loadRanking(String url) {
+		table.hide();
+		errorText.setText("KARGATZEN");
+		errorText.show();
 		table.clear();
 		HttpClient http = HttpClientBuilder.create().build();
-		HttpGet request = new HttpGet(RANKING_GENERAL_URL);
+		HttpGet request = new HttpGet(url);
 		try {
 			HttpResponse response = http.execute(request);
 			Scanner scanner = new Scanner(response.getEntity().getContent(), "UTF-8");
@@ -115,17 +151,29 @@ public class RankingScreen extends GameScreen {
 			scanner.close();
 			JSONArray array = JsonPath.read(json, "$[*]");
 			ListIterator<Object> objectList = array.listIterator();
+			if (!objectList.hasNext()) throw new PlayerNotFoundException(getSearchTerm());
 			while (objectList.hasNext()) {
 				Map<String, Object> info = (Map<String, Object>) objectList.next();
 				table.withRow(info.get("position"), info.get("username"), info.get("score"));
 			}
 			errorText.setText("");
 			table.show();
-			System.out.println("Rankinga ondo kargatu da");
+			textField.show();
+			searchText.show();
+			searchButton.show();
+		} catch (PlayerNotFoundException e) {
+			activateError("Jokalaria ez da ageri datu basean");
+			searchText.show();
+			searchButton.show();
+			textField.show();
 		} catch (Exception e) {
 			activateError("Akats bat gertatu da");
 			System.err.println(e.getLocalizedMessage());
 		}
+	}
+	
+	public String getSearchTerm() {
+		return textField.getText();
 	}
 
 }
