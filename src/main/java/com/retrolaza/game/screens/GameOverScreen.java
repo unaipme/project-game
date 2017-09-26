@@ -68,16 +68,14 @@ public class GameOverScreen extends GameScreen {
 	@Override
 	public void setUp() {
 		game().addKeyListener(controls);
-		game().getMusic().stop();
+		game().stopMusic();
 	}
 
 	@Override
 	public void turnOff() {
 		game().removeKeyListener(controls);
-		if (game().getMusic() != null) {
-			game().getMusic().reset();
-			game().getMusic().start();
-		}
+		game().resetMusic();
+		game().playMusic();
 	}
 
 }

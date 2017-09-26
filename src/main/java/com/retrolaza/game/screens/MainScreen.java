@@ -28,7 +28,7 @@ public class MainScreen extends GameScreen {
 	
 	private RankingScreen rankingScreen;
 	private OptionsScreen optionsScreen;
-	private GameplayScreen gameScreen;
+	private DifficultySelectorScreen difficultyScreen;
 	
 	public static final int DR_MENU = Game.ID.getAndIncrement();
 	public static final int DR_LOGO = Game.ID.getAndIncrement();
@@ -42,6 +42,7 @@ public class MainScreen extends GameScreen {
 	
 	public MainScreen(Game game) throws FontFormatException, IOException {
 		super(game, null);
+		final MainScreen self = this;
 		
 		menu = new Menu(100, 230);
 		menu.setSeparation(60);
@@ -57,8 +58,8 @@ public class MainScreen extends GameScreen {
 		optionsScreen = new OptionsScreen(game, this);
 		Game.addScreen(optionsScreen);
 		
-		gameScreen = new GameplayScreen(game, this);
-		Game.addScreen(gameScreen);
+		difficultyScreen = new DifficultySelectorScreen(game, this);
+		Game.addScreen(difficultyScreen);
 		
 		gameLogo = new AnimatedImage("res/img/retro_game.gif", game(), 480, 240);
 		addDrawable(DR_LOGO, gameLogo);
@@ -88,7 +89,7 @@ public class MainScreen extends GameScreen {
 		addDrawable(DR_ENTER_TEXT, enterInstructions);
 
 		game().setMusic("res/music/8_Bit_Dungeon_Boss.wav");
-		game().getMusic().start();
+		game().playMusic();
 		
 		setBackground("res/img/background.png");
 		
@@ -97,19 +98,18 @@ public class MainScreen extends GameScreen {
 		controls.when(KeyEvent.VK_UP).then(m -> ((Menu) m.getDrawable(DR_MENU)).previousSelected());
 		controls.when(KeyEvent.VK_ESCAPE).then(m -> System.exit(0));
 		controls.when(KeyEvent.VK_ENTER).then(m -> {
-			MainScreen ms = (MainScreen) m;
 			switch (((Menu) m.getDrawable(DR_MENU)).getSelectedOption()) {
 			case 0:
-				ms.hide();
-				ms.getGameScreen().show();
+				m.hide();
+				self.getDifficultyScreen().show();
 				break;
 			case 1:
-				ms.hide();
-				ms.getRankingScreen().show();
+				m.hide();
+				self.getRankingScreen().show();
 				break;
 			case 2:
-				ms.hide();
-				ms.getOptionsScreen().show();
+				m.hide();
+				self.getOptionsScreen().show();
 				break;
 			case 3:
 				System.exit(0);
@@ -143,8 +143,8 @@ public class MainScreen extends GameScreen {
 		return optionsScreen;
 	}
 	
-	public GameplayScreen getGameScreen() {
-		return gameScreen;
+	public DifficultySelectorScreen getDifficultyScreen() {
+		return difficultyScreen;
 	}
 	
 }

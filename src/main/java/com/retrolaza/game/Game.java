@@ -85,8 +85,16 @@ public class Game extends JPanel {
 		}
 	}
 	
-	public Music getMusic() {
-		return this.music;
+	public void playMusic() {
+		if (this.music != null) music.start();
+	}
+	
+	public void stopMusic() {
+		if (this.music != null) music.stop();
+	}
+	
+	public void resetMusic() {
+		if (this.music != null) music.reset();
 	}
 
 }
