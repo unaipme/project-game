@@ -1,9 +1,12 @@
-package com.retrolaza.game.scenery.data;
+package com.retrolaza.game.scenery.drawable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrickRow {
+import com.retrolaza.game.Game;
+import com.retrolaza.game.drawable.Drawable;
+
+public class BrickRow extends Drawable {
 	
 	private int row;
 	private List<Brick> bricks;
@@ -15,6 +18,7 @@ public class BrickRow {
 	
 	public void addBrick(Brick b) {
 		bricks.add(b);
+		addDrawable(Game.ID.getAndIncrement(), b);
 	}
 
 	public int getRow() {

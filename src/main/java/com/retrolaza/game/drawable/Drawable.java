@@ -30,8 +30,6 @@ public abstract class Drawable {
 		return this.hiding;
 	}
 	
-	//public abstract void draw(Graphics2D g2d);
-	
 	public void draw(Graphics2D g2d) {
 		if (!isHiding()) {
 			drawables.forEach((id, d) -> d.draw(g2d));
