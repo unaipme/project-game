@@ -4,7 +4,6 @@ import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,8 @@ public class Game extends JPanel {
 
 	private Music music;
 	
-	public final static int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-	public final static int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+	public final static int SCREEN_WIDTH = 1200;
+	public final static int SCREEN_HEIGHT = 750;
 	
 	public final static AtomicInteger ID = new AtomicInteger();
 	
@@ -65,8 +64,7 @@ public class Game extends JPanel {
 		
 		JFrame frame = new JFrame("project-game");
 		frame.add(game);
-		//frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-		frame.setSize(1200, 750);
+		frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setIconImage(new ImageIcon("res/img/logo.png").getImage());

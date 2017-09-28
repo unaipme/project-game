@@ -88,7 +88,7 @@ public class MainScreen extends GameScreen {
 		enterInstructions.setSize(20);
 		addDrawable(DR_ENTER_TEXT, enterInstructions);
 
-		game().setMusic("res/music/8_Bit_Dungeon_Boss.wav");
+		game().setMusic("res/music/Pixel_Peeker_Polka_faster.wav");
 		game().playMusic();
 		
 		setBackground("res/img/background.png");

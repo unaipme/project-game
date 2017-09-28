@@ -54,7 +54,7 @@ public class GameOverScreen extends GameScreen {
 		controls = new KeyboardControls(this);
 		controls.when(KeyEvent.VK_ESCAPE).then(s -> {
 			s.hide();
-			s.getParent().getParent().show();
+			s.getParent().getParent().getParent().show();
 		});
 		controls.when(KeyEvent.VK_ENTER).then(s -> {
 			s.hide();

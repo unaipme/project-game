@@ -35,9 +35,9 @@ public class OptionsScreen extends GameScreen {
 	public static final int DR_ENTER_TEXT = Game.ID.getAndIncrement();
 	public static final int DR_ENTER_BUTTON = Game.ID.getAndIncrement();
 	
-	private static final String SONG_1 = "res/music/8_bit_Dungeon_Boss.wav";
+	private static final String SONG_1 = "res/music/Pixel_Peeker_Polka_faster.wav";
 	private static final String SONG_2 = "res/music/Pinball_Spring.wav";
-	private static final String SONG_3 = "res/music/Pixel_Peeker_Polka_faster.wav";
+	private static final String SONG_3 = "res/music/8_bit_Dungeon_Boss.wav";
 	private static final String SONG_4 = "res/music/Show_Your_oves.wav";
 
 	public OptionsScreen(Game g, GameScreen parent) throws FontFormatException, IOException {
