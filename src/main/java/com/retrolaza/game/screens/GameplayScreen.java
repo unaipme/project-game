@@ -60,7 +60,7 @@ public class GameplayScreen extends GameScreen {
 		addDrawable(DR_BALL, ball);
 		
 		gameControls = new KeyboardControls(this);
-		gameControls.when(KeyEvent.VK_P).then(s -> ((GameplayScreen) s).gameOver());
+		gameControls.when(KeyEvent.VK_ESCAPE).then(s -> ((GameplayScreen) s).gameOver());
 		
 		hide();
 	}
@@ -99,6 +99,14 @@ public class GameplayScreen extends GameScreen {
 		newGame(scenery.getNextLevel());
 	}
 	
+	public GameOverScreen getGameOverScreen() {
+		return gameOverScreen;
+	}
+
+	public void setGameOverScreen(GameOverScreen gameOverScreen) {
+		this.gameOverScreen = gameOverScreen;
+	}
+
 	public void gameOver() {
 		hide();
 		gameOverScreen.show();
@@ -111,6 +119,7 @@ public class GameplayScreen extends GameScreen {
 			scenery = SceneryParser.load(file);
 			addDrawable(DR_SCENERY, scenery);
 			scenery.getRows().values().forEach(r -> r.getBricks().forEach(b -> ball.addCollisionable(b)));
+			ball.setTotalSpeed(scenery.getSpeed());
 			setBackground(scenery.getBackground());
 			this.lives = 4;
 			lifeLost();

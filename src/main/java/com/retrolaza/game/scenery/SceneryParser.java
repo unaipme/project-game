@@ -21,6 +21,7 @@ public class SceneryParser {
 		Map<Integer, BrickRow> rows = new HashMap<>();
 		String background = JsonPath.read(s, "$.background");
 		String nextLevel = JsonPath.read(s, "$.nextLevel");
+		double speed = JsonPath.read(s, "$.ballSpeed");
 		List<Object> list = JsonPath.read(s, "$.rows[*]");
 		list.forEach(l -> {
 			Map<Object, Object> m = (Map<Object, Object>) l;
@@ -32,7 +33,7 @@ public class SceneryParser {
 			});
 			rows.put(row.getRow(), row);
 		});
-		return new Scenery(rows, background, nextLevel);
+		return new Scenery(rows, background, nextLevel, speed);
 	}
 	
 }

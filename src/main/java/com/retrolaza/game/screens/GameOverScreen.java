@@ -20,6 +20,16 @@ public class GameOverScreen extends GameScreen {
 	private Text retryText;
 	private Text exitText;
 	
+	private String chosenGame;
+	
+	public String getChosenGame() {
+		return chosenGame;
+	}
+
+	public void setChosenGame(String chosenGame) {
+		this.chosenGame = chosenGame;
+	}
+
 	public static final int DR_GOVER_IMG = Game.ID.getAndIncrement();
 	public static final int DR_RETRY_BTN = Game.ID.getAndIncrement();
 	public static final int DR_EXIT_BTN = Game.ID.getAndIncrement();
@@ -28,6 +38,7 @@ public class GameOverScreen extends GameScreen {
 
 	public GameOverScreen(Game g, GameScreen parent) throws FontFormatException, IOException {
 		super(g, parent);
+		final GameOverScreen self = this;
 		
 		setBackground("res/img/background.png");
 		
@@ -58,7 +69,7 @@ public class GameOverScreen extends GameScreen {
 		});
 		controls.when(KeyEvent.VK_ENTER).then(s -> {
 			s.hide();
-			((GameplayScreen) s.getParent()).newGame("res/scenery/nivel1_1.json");
+			((GameplayScreen) s.getParent()).newGame(self.getChosenGame());
 			s.getParent().show();
 		});
 		

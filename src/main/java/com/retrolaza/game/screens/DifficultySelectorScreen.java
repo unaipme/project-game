@@ -85,20 +85,24 @@ public class DifficultySelectorScreen extends GameScreen {
 		controls.when(KeyEvent.VK_DOWN).then(gs -> self.getMenu().nextSelected());
 		controls.when(KeyEvent.VK_UP).then(gs -> self.getMenu().previousSelected());
 		controls.when(KeyEvent.VK_ENTER).then(gs -> {
-			
 			self.hide();
 			self.getGameScreen().show();
+			String chosenGame;
 			switch (self.getMenu().getSelectedOption()) {
 			case 0:
-				self.getGameScreen().newGame("res/scenery/nivel1_1.json");
+				chosenGame = "res/scenery/nivel1_1.json";
 				break;
 			case 1:
-				self.getGameScreen().newGame("res/scenery/nivel2_1.json");
+				chosenGame = "res/scenery/nivel2_1.json";
 				break;
 			case 2:
-				self.getGameScreen().newGame("res/scenery/nivel1_1.json");
+				chosenGame = "res/scenery/nivel1_1.json";
 				break;
+			default:
+				chosenGame = "";
 			}
+			self.getGameScreen().newGame(chosenGame);
+			self.getGameScreen().getGameOverScreen().setChosenGame(chosenGame);
 		});
 		controls.when(KeyEvent.VK_ESCAPE).then(gs -> {
 			self.hide();

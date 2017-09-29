@@ -345,5 +345,6 @@
             ]
         }
     ],
-    "background": "res/img/fondo_nivel_2.gif"
+    "background": "res/img/fondo_nivel_2.gif",
+    "ballSpeed": 1.5
 }

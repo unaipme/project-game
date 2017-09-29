@@ -15,17 +15,24 @@ public class Ball extends Movable {
 	
 	private static final int DIAMETER = 20;
 	
-	private static final double TOTAL_SPEED = Math.sqrt(2.0);
+	private double totalSpeed;
 	
 	private Runnable lifeLostListener = null;
 	private Runnable noMoreBricksListener = null;
 
 	public Ball(int x, int y) {
 		super(x, y, DIAMETER, DIAMETER);
-		
 		initialSpeed();
 	}
 	
+	public double getTotalSpeed() {
+		return totalSpeed;
+	}
+
+	public void setTotalSpeed(double totalSpeed) {
+		this.totalSpeed = Math.sqrt(2 * Math.pow(totalSpeed, 2));
+	}
+
 	@Override
 	public void draw(Graphics2D g2d) {
 		super.draw(g2d);
@@ -45,10 +52,10 @@ public class Ball extends Movable {
 					if (m instanceof Stick) {
 						double relativePosition = (((getX() + (getWidth() / 2)) - m.getX()) * 100) / 120;
 						double angle = 25 + ((relativePosition * 45) / 100);
-						double newSpeedX = Math.sin(Math.toRadians(angle)) * TOTAL_SPEED;
+						double newSpeedX = Math.sin(Math.toRadians(angle)) * totalSpeed;
 						if (angle < 45) newSpeedX *= -1;
 						setSpeedX(newSpeedX);
-						setSpeedY(-Math.cos(Math.toRadians(angle)) * TOTAL_SPEED);
+						setSpeedY(-Math.cos(Math.toRadians(angle)) * totalSpeed);
 					} else {
 						setSpeedY(getSpeedY() * -1);
 						if (((Brick) m).collision()) toRemove.add(m);
@@ -104,7 +111,7 @@ public class Ball extends Movable {
 	
 	public void initialSpeed() {
 		setSpeedX(0.0);
-		setSpeedY(TOTAL_SPEED);
+		setSpeedY(totalSpeed);
 	}
 	
 	public void makeWait() {
