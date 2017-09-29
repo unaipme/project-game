@@ -1,12 +1,17 @@
 package com.retrolaza.game.screens;
 
+import java.awt.Color;
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
 import com.retrolaza.game.controls.KeyboardControls;
+import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.movable.Ball;
 import com.retrolaza.game.drawable.movable.Stick;
 import com.retrolaza.game.scenery.SceneryParser;
@@ -31,6 +36,8 @@ public class GameplayScreen extends GameScreen {
 	
 	public static final int DR_STICK = Game.ID.getAndIncrement();
 	public static final int DR_BALL = Game.ID.getAndIncrement();
+	
+	private List<Image> hearts;
 
 	public GameplayScreen(Game g, GameScreen parent) throws FontFormatException, IOException {
 		super(g, parent);
@@ -41,9 +48,15 @@ public class GameplayScreen extends GameScreen {
 		stick = new Stick(540, 630);
 		addDrawable(DR_STICK, stick);
 		
+		hearts = new ArrayList<>();
+		hearts.add(new Image("res/img/vida.png", game(), 1115, 10));
+		hearts.add(new Image("res/img/vida.png", game(), 1030, 10));
+		hearts.add(new Image("res/img/vida.png", game(), 945, 10));
+		
 		ball = new Ball(590, 500);
 		ball.addCollisionable(stick);
 		ball.setLifeLostListener(() -> lifeLost());
+		ball.setNoMoreBricksListener(() -> gameComplete()); 
 		addDrawable(DR_BALL, ball);
 		
 		gameControls = new KeyboardControls(this);
@@ -59,6 +72,16 @@ public class GameplayScreen extends GameScreen {
 		stick.setPosition(540, 630);
 		ball.makeWait();
 	}
+	
+	@Override
+	public void draw(Graphics2D g2d) {
+		super.draw(g2d);
+		if (!hiding) {
+			g2d.setColor(Color.BLACK);
+			g2d.fillRect(0, 0, 1200, 80);
+			for (int i=lives; i>0; i--) hearts.get(i - 1).draw(g2d);
+		}
+	}
 
 	@Override
 	public void setUp() {
@@ -70,6 +93,10 @@ public class GameplayScreen extends GameScreen {
 	public void turnOff() {
 		game().removeKeyListener(gameControls);
 		game().removeKeyListener(stick.getControlls());
+	}
+	
+	public void gameComplete() {
+		System.out.println("Irabazi");
 	}
 	
 	public void gameOver() {
@@ -84,6 +111,7 @@ public class GameplayScreen extends GameScreen {
 			scenery = SceneryParser.load(file);
 			addDrawable(DR_SCENERY, scenery);
 			scenery.getRows().values().forEach(r -> r.getBricks().forEach(b -> ball.addCollisionable(b)));
+			setBackground(scenery.getBackground());
 			this.lives = 4;
 			lifeLost();
 		} catch (IOException e) {

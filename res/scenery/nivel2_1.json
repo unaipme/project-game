@@ -296,5 +296,6 @@
                 }
             ]
         }
-    ]
+    ],
+    "background": "res/img/fondo_nivel_2.gif"
 }

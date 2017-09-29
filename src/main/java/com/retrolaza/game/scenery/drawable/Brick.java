@@ -20,11 +20,14 @@ public class Brick extends Movable {
 	
 	@Override
 	public void draw(Graphics2D g2d) {
-		if (lives == 2) g2d.setColor(Color.DARK_GRAY);
-		else if (lives == 1) g2d.setColor(Color.WHITE);
-		g2d.fillRect((int) getX(), (int) getY(), getWidth(), getHeight());
-		g2d.setColor(Color.BLACK);
-		g2d.drawRect((int) getX(), (int) getY(), getWidth(), getHeight());
+		super.draw(g2d);
+		if (!hiding) {
+			if (lives == 2) g2d.setColor(Color.DARK_GRAY);
+			else if (lives == 1) g2d.setColor(Color.WHITE);
+			g2d.fillRect((int) getX(), (int) getY(), getWidth(), getHeight());
+			g2d.setColor(Color.BLACK);
+			g2d.drawRect((int) getX(), (int) getY(), getWidth(), getHeight());
+		}
 	}
 	
 	public boolean collision() {

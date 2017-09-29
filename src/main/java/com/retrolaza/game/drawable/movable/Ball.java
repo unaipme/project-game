@@ -18,6 +18,7 @@ public class Ball extends Movable {
 	private static final double TOTAL_SPEED = Math.sqrt(2.0);
 	
 	private Runnable lifeLostListener = null;
+	private Runnable noMoreBricksListener = null;
 
 	public Ball(int x, int y) {
 		super(x, y, DIAMETER, DIAMETER);
@@ -29,7 +30,7 @@ public class Ball extends Movable {
 	public void draw(Graphics2D g2d) {
 		super.draw(g2d);
 		if (getX() + getWidth() + getSpeedX() > Game.SCREEN_WIDTH || getX() + getSpeedX() < 0) setSpeedX(getSpeedX() * -1);
-		if (getY() + getSpeedY() < 0) setSpeedY(getSpeedY() * -1);
+		if (getY() + getSpeedY() <= 80) setSpeedY(getSpeedY() * -1);
 		if (getY() + getHeight() + getSpeedY() >= Game.SCREEN_HEIGHT) {
 			toggleLifeLost();
 			return;
@@ -65,11 +66,16 @@ public class Ball extends Movable {
 					getY() + getHeight() > m.getY() && getY() < m.getY() + m.getHeight()) ||
 					(getX() + getSpeedX() < m.getX() + m.getWidth() && getX() + getSpeedX() > m.getX() &&
 					getY() + getHeight() > m.getY() && getY() < m.getY() + m.getHeight()))) {
-				setSpeedX(getSpeedX() * -1);
-				if (m instanceof Brick && (((Brick) m).collision())) toRemove.add(m);
+				if (m instanceof Brick) {
+					setSpeedX(getSpeedX() * -1);
+					if (((Brick) m).collision()) toRemove.add(m);
+				} else if (m instanceof Stick && m.getSpeedX() != 0) {
+					setSpeedX(m.getSpeedX());
+				}
 			}
 		}
 		toRemove.forEach(e -> getCollisionables().remove(e));
+		if (getCollisionables().size() == 1) toggleNoMoreBricks();
 		g2d.setColor(Color.WHITE);
 		g2d.fillOval((int) getX(), (int) getY(), getWidth(), getHeight());
 		g2d.setColor(Color.BLACK);
@@ -83,6 +89,16 @@ public class Ball extends Movable {
 	public void toggleLifeLost() {
 		if (lifeLostListener != null) {
 			lifeLostListener.run();
+		}
+	}
+	
+	public void setNoMoreBricksListener(Runnable runnable) {
+		this.noMoreBricksListener = runnable;
+	}
+	
+	public void toggleNoMoreBricks() {
+		if (noMoreBricksListener != null) {
+			noMoreBricksListener.run();
 		}
 	}
 	
