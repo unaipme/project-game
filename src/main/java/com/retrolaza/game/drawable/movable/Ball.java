@@ -2,17 +2,20 @@ package com.retrolaza.game.drawable.movable;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.retrolaza.game.Game;
+import com.retrolaza.game.scenery.drawable.Brick;
 
 public class Ball extends Movable {
 	
 	private static final int DIAMETER = 20;
 	
-	private static final double TOTAL_SPEED = Math.sqrt(4.5);
+	private static final double TOTAL_SPEED = Math.sqrt(2.0);
 	
 	private Runnable lifeLostListener = null;
 
@@ -32,6 +35,7 @@ public class Ball extends Movable {
 			return;
 		}
 		ListIterator<Movable> it = getCollisionables().listIterator();
+		List<Movable> toRemove = new ArrayList<>();
 		while (it.hasNext()) {
 			Movable m = it.next();
 			if (getSpeedY() > 0) {
@@ -42,25 +46,30 @@ public class Ball extends Movable {
 						double angle = 25 + ((relativePosition * 45) / 100);
 						double newSpeedX = Math.sin(Math.toRadians(angle)) * TOTAL_SPEED;
 						if (angle < 45) newSpeedX *= -1;
-						double newSpeedY = -Math.cos(Math.toRadians(angle)) * TOTAL_SPEED;
 						setSpeedX(newSpeedX);
-						setSpeedY(newSpeedY);
+						setSpeedY(-Math.cos(Math.toRadians(angle)) * TOTAL_SPEED);
 					} else {
 						setSpeedY(getSpeedY() * -1);
+						if (((Brick) m).collision()) toRemove.add(m);
 					}
 				}
 			} else if (getSpeedY() < 0) {
 				if (getY() + getSpeedY() < m.getY() + m.getHeight() && getY() + getSpeedY() > m.getY() &&
 						getX() + getWidth() > m.getX() && getX() < m.getX() + m.getWidth()) {
 					setSpeedY(getSpeedY() * -1);
+					if (m instanceof Brick && ((Brick) m).collision()) toRemove.add(m);
 				}
 			}
-			if (getSpeedX() > 0) {
-				
-			} else if (getSpeedX() < 0) {
-				
+			if((getSpeedX() != 0) && 
+					((getX() + getSpeedX() + getWidth() > m.getX() && getX() < m.getX() + m.getWidth() &&
+					getY() + getHeight() > m.getY() && getY() < m.getY() + m.getHeight()) ||
+					(getX() + getSpeedX() < m.getX() + m.getWidth() && getX() + getSpeedX() > m.getX() &&
+					getY() + getHeight() > m.getY() && getY() < m.getY() + m.getHeight()))) {
+				setSpeedX(getSpeedX() * -1);
+				if (m instanceof Brick && (((Brick) m).collision())) toRemove.add(m);
 			}
 		}
+		toRemove.forEach(e -> getCollisionables().remove(e));
 		g2d.setColor(Color.WHITE);
 		g2d.fillOval((int) getX(), (int) getY(), getWidth(), getHeight());
 		g2d.setColor(Color.BLACK);
@@ -78,8 +87,8 @@ public class Ball extends Movable {
 	}
 	
 	public void initialSpeed() {
-		setSpeedX(1.5);
-		setSpeedY(1.5);
+		setSpeedX(0.0);
+		setSpeedY(TOTAL_SPEED);
 	}
 	
 	public void makeWait() {

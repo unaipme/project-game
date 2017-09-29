@@ -58,7 +58,7 @@ public class GameOverScreen extends GameScreen {
 		});
 		controls.when(KeyEvent.VK_ENTER).then(s -> {
 			s.hide();
-			((GameplayScreen) s.getParent()).newGame();
+			((GameplayScreen) s.getParent()).newGame("res/scenery/nivel1_1.json");
 			s.getParent().show();
 		});
 		

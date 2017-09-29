@@ -7,24 +7,27 @@ import java.io.IOException;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
 import com.retrolaza.game.controls.KeyboardControls;
-import com.retrolaza.game.drawable.Text;
 import com.retrolaza.game.drawable.movable.Ball;
 import com.retrolaza.game.drawable.movable.Stick;
+import com.retrolaza.game.scenery.SceneryParser;
+import com.retrolaza.game.scenery.drawable.Scenery;
 
 public class GameplayScreen extends GameScreen {
 	
-	private Text livesText;
 	private KeyboardControls gameControls;
 	
 	private Integer lives;
 	
 	private Stick stick;
 	private Ball ball;
+	private Scenery scenery;
 	
 	private GameOverScreen gameOverScreen;
 	
 	public static final int DR_LIVES_TEXT = Game.ID.getAndIncrement();
 	public static final int DR_GOVER_TEXT = Game.ID.getAndIncrement();
+	
+	public static final int DR_SCENERY = Game.ID.getAndIncrement();
 	
 	public static final int DR_STICK = Game.ID.getAndIncrement();
 	public static final int DR_BALL = Game.ID.getAndIncrement();
@@ -32,18 +35,13 @@ public class GameplayScreen extends GameScreen {
 	public GameplayScreen(Game g, GameScreen parent) throws FontFormatException, IOException {
 		super(g, parent);
 		
-		this.lives = 3;
-		
 		gameOverScreen = new GameOverScreen(game(), this);
 		Game.addScreen(gameOverScreen);
 		
-		livesText = new Text(lives.toString(), 60, 120);
-		addDrawable(DR_LIVES_TEXT, livesText);
-		
-		stick = new Stick(200, 630);
+		stick = new Stick(540, 630);
 		addDrawable(DR_STICK, stick);
 		
-		ball = new Ball(150, 100);
+		ball = new Ball(590, 500);
 		ball.addCollisionable(stick);
 		ball.setLifeLostListener(() -> lifeLost());
 		addDrawable(DR_BALL, ball);
@@ -56,9 +54,9 @@ public class GameplayScreen extends GameScreen {
 	
 	private void lifeLost() {
 		if (--lives == 0) gameOver();
-		livesText.setText(lives.toString());
 		ball.stop();
-		ball.setPosition(150, 100);
+		ball.setPosition(590, 500);
+		stick.setPosition(540, 630);
 		ball.makeWait();
 	}
 
@@ -79,9 +77,19 @@ public class GameplayScreen extends GameScreen {
 		gameOverScreen.show();
 	}
 	
-	public void newGame() {
-		this.lives = 4;
-		lifeLost();
+	public void newGame(String file) {
+		try {
+			ball.getCollisionables().clear();
+			ball.addCollisionable(stick);
+			scenery = SceneryParser.load(file);
+			addDrawable(DR_SCENERY, scenery);
+			scenery.getRows().values().forEach(r -> r.getBricks().forEach(b -> ball.addCollisionable(b)));
+			this.lives = 4;
+			lifeLost();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
