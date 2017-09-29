@@ -9,11 +9,17 @@ public class Scenery extends Drawable {
 	
 	private Map<Integer, BrickRow> rows;
 	private String background;
+	private String nextLevel;
 	
-	public Scenery(Map<Integer, BrickRow> rows, String background) {
+	public Scenery(Map<Integer, BrickRow> rows, String background, String nextLevel) {
 		this.rows = rows;
 		this.background = background;
+		this.nextLevel = nextLevel;
 		rows.values().forEach(r -> addDrawable(Game.ID.getAndIncrement(), r));
+	}
+
+	public String getNextLevel() {
+		return nextLevel;
 	}
 
 	public Map<Integer, BrickRow> getRows() {

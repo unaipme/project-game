@@ -358,5 +358,6 @@
             ]
         }
     ],
-    "background": "res/img/fondo_nivel_1.gif"
+    "background": "res/img/fondo_nivel_1.gif",
+    "nextLevel": "res/scenery/nivel1_2.json"
 }

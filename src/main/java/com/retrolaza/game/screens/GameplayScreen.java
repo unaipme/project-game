@@ -96,7 +96,7 @@ public class GameplayScreen extends GameScreen {
 	}
 	
 	public void gameComplete() {
-		System.out.println("Irabazi");
+		newGame(scenery.getNextLevel());
 	}
 	
 	public void gameOver() {

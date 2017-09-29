@@ -16,9 +16,11 @@ public class SceneryParser {
 	
 	@SuppressWarnings("unchecked")
 	public static Scenery load(String path) throws IOException {
+		if (!path.endsWith(".json")) path = path.concat(".json");
 		String s = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
 		Map<Integer, BrickRow> rows = new HashMap<>();
 		String background = JsonPath.read(s, "$.background");
+		String nextLevel = JsonPath.read(s, "$.nextLevel");
 		List<Object> list = JsonPath.read(s, "$.rows[*]");
 		list.forEach(l -> {
 			Map<Object, Object> m = (Map<Object, Object>) l;
@@ -30,7 +32,7 @@ public class SceneryParser {
 			});
 			rows.put(row.getRow(), row);
 		});
-		return new Scenery(rows, background);
+		return new Scenery(rows, background, nextLevel);
 	}
 	
 }
