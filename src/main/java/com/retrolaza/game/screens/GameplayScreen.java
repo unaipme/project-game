@@ -28,6 +28,7 @@ public class GameplayScreen extends GameScreen {
 	private Scenery scenery;
 	
 	private GameOverScreen gameOverScreen;
+	private GameCompleteScreen gameCompleteScreen;
 	
 	public static final int DR_LIVES_TEXT = Game.ID.getAndIncrement();
 	public static final int DR_GOVER_TEXT = Game.ID.getAndIncrement();
@@ -41,9 +42,13 @@ public class GameplayScreen extends GameScreen {
 
 	public GameplayScreen(Game g, GameScreen parent) throws FontFormatException, IOException {
 		super(g, parent);
+		final GameplayScreen self = this;
 		
 		gameOverScreen = new GameOverScreen(game(), this);
 		Game.addScreen(gameOverScreen);
+		
+		gameCompleteScreen = new GameCompleteScreen(game(), this);
+		Game.addScreen(gameCompleteScreen);
 		
 		stick = new Stick(540, 630);
 		addDrawable(DR_STICK, stick);
@@ -60,7 +65,7 @@ public class GameplayScreen extends GameScreen {
 		addDrawable(DR_BALL, ball);
 		
 		gameControls = new KeyboardControls(this);
-		gameControls.when(KeyEvent.VK_ESCAPE).then(s -> ((GameplayScreen) s).gameOver());
+		gameControls.when(KeyEvent.VK_ESCAPE).then(s -> self.gameOver());
 		
 		hide();
 	}
@@ -96,7 +101,12 @@ public class GameplayScreen extends GameScreen {
 	}
 	
 	public void gameComplete() {
-		newGame(scenery.getNextLevel());
+		if (scenery.getNextLevel() != null)
+			newGame(scenery.getNextLevel());
+		else {
+			this.hide();
+			
+		}
 	}
 	
 	public GameOverScreen getGameOverScreen() {

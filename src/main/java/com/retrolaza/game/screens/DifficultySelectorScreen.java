@@ -96,7 +96,7 @@ public class DifficultySelectorScreen extends GameScreen {
 				chosenGame = "res/scenery/nivel2_1.json";
 				break;
 			case 2:
-				chosenGame = "res/scenery/nivel1_1.json";
+				chosenGame = "res/scenery/nivel3_1.json";
 				break;
 			default:
 				chosenGame = "";

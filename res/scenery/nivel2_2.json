@@ -346,5 +346,6 @@
         }
     ],
     "background": "res/img/fondo_nivel_2.gif",
-    "ballSpeed": 1.5
+    "ballSpeed": 1.5,
+    "nextLevel": "res/scenery/nivel3_1.json"
 }

@@ -31,7 +31,10 @@ public class Brick extends Movable {
 	}
 	
 	public boolean collision() {
-		if (--lives == 0) hide();
+		if (lives >= 0) {
+			lives--;
+			if (lives == 0) hide();
+		}
 		return lives == 0;
 	}
 	
