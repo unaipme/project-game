@@ -46,5 +46,9 @@ public class MovableController<T extends Movable> implements KeyListener {
 	public void addResponse(int event, Consumer<T> response) {
 		responses.put(event, response);
 	}
+	
+	public void clear() {
+		pressedKeys.clear();
+	}
 
 }

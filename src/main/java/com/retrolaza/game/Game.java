@@ -65,6 +65,7 @@ public class Game extends JPanel {
 		JFrame frame = new JFrame("project-game");
 		frame.add(game);
 		frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setIconImage(new ImageIcon("res/img/logo.png").getImage());

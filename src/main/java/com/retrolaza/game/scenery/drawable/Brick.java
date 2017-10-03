@@ -2,12 +2,14 @@ package com.retrolaza.game.scenery.drawable;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Optional;
 
 import com.retrolaza.game.drawable.movable.Movable;
 
 public class Brick extends Movable {
 	
 	private int lives;
+	private Runnable whenCollision;
 	
 	public Brick(int x, int y, int lives) {
 		super(x, y, 40, 120);
@@ -37,7 +39,12 @@ public class Brick extends Movable {
 			lives--;
 			if (lives == 0) hide();
 		}
+		Optional.ofNullable(whenCollision).ifPresent(Runnable::run);
 		return lives == 0;
+	}
+	
+	public void setCollisionEvent(Runnable r) {
+		this.whenCollision = r;
 	}
 	
 }

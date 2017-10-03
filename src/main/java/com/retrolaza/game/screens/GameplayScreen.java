@@ -7,11 +7,14 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
 import com.retrolaza.game.controls.KeyboardControls;
 import com.retrolaza.game.drawable.Image;
+import com.retrolaza.game.drawable.Text;
 import com.retrolaza.game.drawable.movable.Ball;
 import com.retrolaza.game.drawable.movable.Stick;
 import com.retrolaza.game.scenery.SceneryParser;
@@ -22,6 +25,7 @@ public class GameplayScreen extends GameScreen {
 	private KeyboardControls gameControls;
 	
 	private Integer lives;
+	private Text score;
 	
 	private Stick stick;
 	private Ball ball;
@@ -30,6 +34,11 @@ public class GameplayScreen extends GameScreen {
 	private GameOverScreen gameOverScreen;
 	private GameCompleteScreen gameCompleteScreen;
 	
+	private final Runnable brokenBrickScoreAdder = () -> setScore(getScore() + 1);
+	
+	private TimerTask scoreSubstractTask;
+	private Timer scoreSubstracter;
+	
 	public static final int DR_LIVES_TEXT = Game.ID.getAndIncrement();
 	public static final int DR_GOVER_TEXT = Game.ID.getAndIncrement();
 	
@@ -37,6 +46,7 @@ public class GameplayScreen extends GameScreen {
 	
 	public static final int DR_STICK = Game.ID.getAndIncrement();
 	public static final int DR_BALL = Game.ID.getAndIncrement();
+	public static final int DR_SCORE = Game.ID.getAndIncrement();
 	
 	private List<Image> hearts;
 
@@ -52,6 +62,14 @@ public class GameplayScreen extends GameScreen {
 		
 		stick = new Stick(540, 630);
 		addDrawable(DR_STICK, stick);
+		
+		scoreSubstractTask = new TimerTask() {
+			@Override
+			public void run() {
+				setScore(getScore() - 1);
+			}
+		};
+		score = new Text("", 15, 65);
 		
 		hearts = new ArrayList<>();
 		hearts.add(new Image("res/img/vida.png", game(), 1115, 10));
@@ -86,6 +104,7 @@ public class GameplayScreen extends GameScreen {
 			g2d.setColor(Color.BLACK);
 			g2d.fillRect(0, 0, 1200, 80);
 			for (int i=lives; i>0; i--) hearts.get(i - 1).draw(g2d);
+			score.draw(g2d);
 		}
 	}
 
@@ -102,6 +121,7 @@ public class GameplayScreen extends GameScreen {
 	}
 	
 	public void gameComplete() {
+		scoreSubstracter.cancel();
 		if (scenery.getNextLevel() != null)
 			newGame(scenery.getNextLevel());
 		else {
@@ -119,25 +139,41 @@ public class GameplayScreen extends GameScreen {
 	}
 
 	public void gameOver() {
+		scoreSubstracter.cancel();
 		hide();
+		stick.getControlls().clear();
 		gameOverScreen.show();
 	}
 	
 	public void newGame(String file) {
+		try {
+			scoreSubstracter.cancel();
+		} catch (IllegalStateException | NullPointerException e) {}
 		try {
 			ball.getCollisionables().clear();
 			ball.addCollisionable(stick);
 			scenery = SceneryParser.load(file);
 			addDrawable(DR_SCENERY, scenery);
 			scenery.getRows().values().forEach(r -> r.getBricks().forEach(b -> ball.addCollisionable(b)));
+			scenery.getRows().values().stream().flatMap(r -> r.getBricks().stream()).forEach(b -> b.setCollisionEvent(brokenBrickScoreAdder));
 			ball.setTotalSpeed(scenery.getSpeed());
 			setBackground(scenery.getBackground());
 			this.lives = 4;
 			lifeLost();
+			scoreSubstracter = new Timer();
+			scoreSubstracter.schedule(scoreSubstractTask, 13000, 10000);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public Integer getScore() {
+		return Integer.parseInt(score.getText());
+	}
+	
+	public void setScore(Integer s) {
+		score.setText(s.toString());
 	}
 
 }
