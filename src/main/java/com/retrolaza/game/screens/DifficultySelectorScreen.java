@@ -87,6 +87,7 @@ public class DifficultySelectorScreen extends GameScreen {
 		controls.when(KeyEvent.VK_ENTER).then(gs -> {
 			self.hide();
 			self.getGameScreen().show();
+			self.getGameScreen().setScore(10);
 			String chosenGame;
 			switch (self.getMenu().getSelectedOption()) {
 			case 0:

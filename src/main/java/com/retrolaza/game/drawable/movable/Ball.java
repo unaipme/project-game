@@ -32,10 +32,8 @@ public class Ball extends Movable {
 	public void setTotalSpeed(double totalSpeed) {
 		this.totalSpeed = Math.sqrt(2 * Math.pow(totalSpeed, 2));
 	}
-
-	@Override
-	public void draw(Graphics2D g2d) {
-		super.draw(g2d);
+	
+	private void calculatePhysics() {
 		if (getX() + getWidth() + getSpeedX() > Game.SCREEN_WIDTH || getX() + getSpeedX() < 0) setSpeedX(getSpeedX() * -1);
 		if (getY() + getSpeedY() <= 80) setSpeedY(getSpeedY() * -1);
 		if (getY() + getHeight() + getSpeedY() >= Game.SCREEN_HEIGHT) {
@@ -56,9 +54,11 @@ public class Ball extends Movable {
 						if (angle < 45) newSpeedX *= -1;
 						setSpeedX(newSpeedX);
 						setSpeedY(-Math.cos(Math.toRadians(angle)) * totalSpeed);
+						System.out.println(it.nextIndex() - 1);
 					} else {
 						setSpeedY(getSpeedY() * -1);
 						if (((Brick) m).collision()) toRemove.add(m);
+						System.out.println(it.nextIndex() - 1);
 					}
 				}
 			} else if (getSpeedY() < 0) {
@@ -66,6 +66,7 @@ public class Ball extends Movable {
 						getX() + getWidth() > m.getX() && getX() < m.getX() + m.getWidth()) {
 					setSpeedY(getSpeedY() * -1);
 					if (m instanceof Brick && ((Brick) m).collision()) toRemove.add(m);
+					System.out.println(it.nextIndex() - 1);
 				}
 			}
 			if((getSpeedX() != 0) && 
@@ -76,12 +77,20 @@ public class Ball extends Movable {
 				if (m instanceof Brick) {
 					setSpeedX(getSpeedX() * -1);
 					if (((Brick) m).collision()) toRemove.add(m);
+					System.out.println(it.nextIndex() - 1);
 				} else if (m instanceof Stick && m.getSpeedX() != 0) {
 					setSpeedX(m.getSpeedX());
+					System.out.println(it.nextIndex() - 1);
 				}
 			}
 		}
 		toRemove.forEach(e -> getCollisionables().remove(e));
+	}
+
+	@Override
+	public void draw(Graphics2D g2d) {
+		super.draw(g2d);
+		calculatePhysics();
 		if (getCollisionables().size() == 1) toggleNoMoreBricks();
 		g2d.setColor(Color.WHITE);
 		g2d.fillOval((int) getX(), (int) getY(), getWidth(), getHeight());
