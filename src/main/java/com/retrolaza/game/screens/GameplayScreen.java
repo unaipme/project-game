@@ -66,6 +66,7 @@ public class GameplayScreen extends GameScreen {
 		
 		gameControls = new KeyboardControls(this);
 		gameControls.when(KeyEvent.VK_ESCAPE).then(s -> self.gameOver());
+		gameControls.when(KeyEvent.VK_F1).then(s -> self.gameComplete());
 		
 		hide();
 	}
@@ -105,7 +106,7 @@ public class GameplayScreen extends GameScreen {
 			newGame(scenery.getNextLevel());
 		else {
 			this.hide();
-			
+			gameCompleteScreen.show();
 		}
 	}
 	

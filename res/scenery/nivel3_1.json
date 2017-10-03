@@ -363,5 +363,5 @@
     ],
     "background": "res/img/fondo_nivel_3.gif",
     "ballSpeed": 1.5,
-    "nextLevel": "res/scenery/nivel3_1.json"
+    "nextLevel": "res/scenery/nivel3_2.json"
 }
