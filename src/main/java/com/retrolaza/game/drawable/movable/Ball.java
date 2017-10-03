@@ -123,14 +123,16 @@ public class Ball extends Movable {
 		setSpeedY(totalSpeed);
 	}
 	
-	public void makeWait() {
+	public Timer makeWait() {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
 				initialSpeed();
 			}
 		};
-		new Timer().schedule(task, 3000);
+		Timer timer = new Timer();
+		timer.schedule(task, 3000);
+		return timer;
 	}
 
 	public void stop() {

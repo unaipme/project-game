@@ -36,8 +36,8 @@ public class GameplayScreen extends GameScreen {
 	
 	private final Runnable brokenBrickScoreAdder = () -> setScore(getScore() + 1);
 	
-	private TimerTask scoreSubstractTask;
 	private Timer scoreSubstracter;
+	private Timer waitTimer;
 	
 	public static final int DR_LIVES_TEXT = Game.ID.getAndIncrement();
 	public static final int DR_GOVER_TEXT = Game.ID.getAndIncrement();
@@ -63,12 +63,7 @@ public class GameplayScreen extends GameScreen {
 		stick = new Stick(540, 630);
 		addDrawable(DR_STICK, stick);
 		
-		scoreSubstractTask = new TimerTask() {
-			@Override
-			public void run() {
-				setScore(getScore() - 1);
-			}
-		};
+		scoreSubstracter = new Timer();
 		score = new Text("", 15, 65);
 		
 		hearts = new ArrayList<>();
@@ -94,7 +89,7 @@ public class GameplayScreen extends GameScreen {
 		ball.stop();
 		ball.setPosition(590, 500);
 		stick.setPosition(540, 630);
-		ball.makeWait();
+		waitTimer = ball.makeWait();
 	}
 	
 	@Override
@@ -139,6 +134,9 @@ public class GameplayScreen extends GameScreen {
 	}
 
 	public void gameOver() {
+		try {
+			waitTimer.cancel();
+		} catch (NullPointerException | IllegalStateException e) {}
 		scoreSubstracter.cancel();
 		hide();
 		stick.getControlls().clear();
@@ -161,11 +159,20 @@ public class GameplayScreen extends GameScreen {
 			this.lives = 4;
 			lifeLost();
 			scoreSubstracter = new Timer();
-			scoreSubstracter.schedule(scoreSubstractTask, 13000, 10000);
+			scoreSubstracter.schedule(getSubstracterTask(), 13000, 10000);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private TimerTask getSubstracterTask() {
+		return new TimerTask() {
+			@Override
+			public void run() {
+				setScore(getScore() - 1);
+			}
+		};
 	}
 	
 	public Integer getScore() {
