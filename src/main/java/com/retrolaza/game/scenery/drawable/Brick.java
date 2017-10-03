@@ -24,8 +24,10 @@ public class Brick extends Movable {
 		if (!hiding) {
 			if (lives == 2) g2d.setColor(Color.DARK_GRAY);
 			else if (lives == 1) g2d.setColor(Color.WHITE);
+			else if (lives == -1) g2d.setColor(Color.BLACK);
 			g2d.fillRect((int) getX(), (int) getY(), getWidth(), getHeight());
-			g2d.setColor(Color.BLACK);
+			if (lives == -1) g2d.setColor(Color.WHITE);
+			else g2d.setColor(Color.BLACK);
 			g2d.drawRect((int) getX(), (int) getY(), getWidth(), getHeight());
 		}
 	}

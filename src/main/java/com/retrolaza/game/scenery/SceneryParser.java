@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 import com.retrolaza.game.scenery.drawable.Brick;
 import com.retrolaza.game.scenery.drawable.BrickRow;
 import com.retrolaza.game.scenery.drawable.Scenery;
@@ -20,7 +21,12 @@ public class SceneryParser {
 		String s = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
 		Map<Integer, BrickRow> rows = new HashMap<>();
 		String background = JsonPath.read(s, "$.background");
-		String nextLevel = JsonPath.read(s, "$.nextLevel");
+		String nextLevel = null;
+		try {
+			nextLevel = JsonPath.read(s, "$.nextLevel");
+		} catch (PathNotFoundException e) {
+			e.printStackTrace();
+		}
 		double speed = JsonPath.read(s, "$.ballSpeed");
 		List<Object> list = JsonPath.read(s, "$.rows[*]");
 		list.forEach(l -> {
