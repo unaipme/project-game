@@ -86,6 +86,16 @@ public class Table extends Drawable {
 		data.clear();
 	}
 	
+	public boolean contains(Integer col, String value) {
+		return data.get(col).stream().anyMatch(t -> value.equals(t.getText()));
+	}
+	
+	public List<Text> getRowWith(String value, Integer col) {
+		return data.stream().filter(t -> {
+			return value.toLowerCase().equals(t.get(col).getText().toLowerCase());
+		}).findFirst().orElse(null);
+	}
+	
 	public static class Builder {
 		
 		private Table table;

@@ -121,7 +121,7 @@ public class GameplayScreen extends GameScreen {
 			newGame(scenery.getNextLevel());
 		else {
 			this.hide();
-			gameCompleteScreen.show();
+			gameCompleteScreen.show(getScore());
 		}
 	}
 	
@@ -140,7 +140,7 @@ public class GameplayScreen extends GameScreen {
 		scoreSubstracter.cancel();
 		hide();
 		stick.getControlls().clear();
-		gameOverScreen.show();
+		gameOverScreen.show(getScore());
 	}
 	
 	public void newGame(String file) {

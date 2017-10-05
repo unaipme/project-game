@@ -107,7 +107,8 @@ public class WritingControls implements KeyListener {
 			add(" ");
 			break;
 		case KeyEvent.VK_BACK_SPACE:
-			writtenText = writtenText.substring(0, writtenText.length() - 1);
+			if (writtenText.length() > 0)
+				writtenText = writtenText.substring(0, writtenText.length() - 1);
 			break;
 		}
 		consumer.accept(writtenText);

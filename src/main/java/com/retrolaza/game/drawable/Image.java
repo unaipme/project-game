@@ -42,6 +42,11 @@ public class Image extends Drawable {
 		this.y = y;
 	}
 	
+	public void setPosition(int x, int y) {
+		setX(x);
+		setY(y);
+	}
+	
 	public void scale(int width, int height, int hints) {
 		image = image.getScaledInstance(width, height, hints);
 	}

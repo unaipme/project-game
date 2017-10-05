@@ -3,16 +3,10 @@ package com.retrolaza.game.screens;
 import java.awt.FontFormatException;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-
-import com.jayway.jsonpath.JsonPath;
+import com.retrolaza.data.RankingUtil;
+import com.retrolaza.data.Record;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
 import com.retrolaza.game.controls.KeyboardControls;
@@ -21,8 +15,6 @@ import com.retrolaza.game.drawable.Table;
 import com.retrolaza.game.drawable.Text;
 import com.retrolaza.game.drawable.TextField;
 import com.retrolaza.game.exception.PlayerNotFoundException;
-
-import net.minidev.json.JSONArray;
 
 public class RankingScreen extends GameScreen {
 	
@@ -48,8 +40,6 @@ public class RankingScreen extends GameScreen {
 	public static final int DR_SEARCH_BUTTON = Game.ID.getAndIncrement();
 	
 	public static final int DR_TEXT_FIELD = Game.ID.getAndIncrement();
-	
-	private static final String RANKING_GENERAL_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/ranking/";
 
 	public RankingScreen(Game game, MainScreen mainScreen) throws FontFormatException, IOException {
 		super(game, mainScreen);
@@ -61,7 +51,7 @@ public class RankingScreen extends GameScreen {
 		});
 		controls.when(KeyEvent.VK_ENTER).then(gs -> {
 			RankingScreen rs = (RankingScreen) gs;
-			new Thread(() -> rs.loadRanking(RANKING_GENERAL_URL + rs.getSearchTerm())).start();
+			new Thread(() -> rs.loadRanking()).start();
 		});
 		
 		titleText = new Text("RANKING", 470, 100);
@@ -133,29 +123,15 @@ public class RankingScreen extends GameScreen {
 	}
 	
 	public void loadRanking() {
-		loadRanking(RANKING_GENERAL_URL);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void loadRanking(String url) {
 		table.hide();
 		errorText.setText("KARGATZEN");
 		errorText.show();
 		table.clear();
-		HttpClient http = HttpClientBuilder.create().build();
-		HttpGet request = new HttpGet(url);
 		try {
-			HttpResponse response = http.execute(request);
-			Scanner scanner = new Scanner(response.getEntity().getContent(), "UTF-8");
-			String json = scanner.useDelimiter("\\A").next();
-			scanner.close();
-			JSONArray array = JsonPath.read(json, "$[*]");
-			ListIterator<Object> objectList = array.listIterator();
-			if (!objectList.hasNext()) throw new PlayerNotFoundException(getSearchTerm());
-			while (objectList.hasNext()) {
-				Map<String, Object> info = (Map<String, Object>) objectList.next();
-				table.withRow(info.get("position"), info.get("username"), info.get("score"));
-			}
+			List<Record> recordList = null;
+			if ("".equals(textField.getText())) recordList = RankingUtil.loadRanking();
+			else recordList = RankingUtil.loadRanking(textField.getText());
+			recordList.forEach(r -> table.withRow(r.getPosition(), r.getUsername(), r.getScore()));
 			errorText.setText("");
 			table.show();
 			textField.show();

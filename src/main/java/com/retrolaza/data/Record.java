@@ -1,4 +1,4 @@
-package com.retrolaza.game.screens.data;
+package com.retrolaza.data;
 
 public class Record {
 	private String username;

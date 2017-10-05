@@ -6,6 +6,7 @@ import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import com.retrolaza.game.Game;
 
@@ -22,8 +23,7 @@ public class Button extends Drawable {
 	
 	public Button(String text, Game game, int x, int y) throws FontFormatException, IOException {
 		this.game = game;
-		this.x = x;
-		this.y = y;
+		setPosition(x, y);
 		this.text = new Text(text, x + 10, y + 43, Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/Pixeled.ttf")).deriveFont(25f));
 		this.text.setColor(Color.BLACK);
 		this.image = null;
@@ -33,13 +33,15 @@ public class Button extends Drawable {
 	@Override
 	public void draw(Graphics2D g2d) {
 		super.draw(g2d);
-		g2d.setColor(Color.BLACK);
-		g2d.drawRect(x, y, width, 55);
-		g2d.setColor(Color.WHITE);
-		g2d.fillRect(x, y, width, 55);
-		text.draw(g2d);
-		if (image != null) {
-			image.draw(g2d);
+		if (!hiding) {
+			g2d.setColor(Color.BLACK);
+			g2d.drawRect(x, y, width, 55);
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(x, y, width, 55);
+			text.draw(g2d);
+			if (image != null) {
+				image.draw(g2d);
+			}
 		}
 	}
 	
@@ -52,6 +54,21 @@ public class Button extends Drawable {
 	
 	public int getWidth() {
 		return width;
+	}
+	
+	public void addToWidth(int diff) {
+		this.width += diff;
+	}
+	
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+		if (image != null) {
+			text.setPosition(x + 55 + text.getText().length(), y + 43);
+			image.setPosition(x + 10, y + 5);
+		} else {
+			Optional.ofNullable(text).ifPresent(t -> t.setPosition(x + 10, y + 43));
+		}
 	}
 	
 }

@@ -1,8 +1,10 @@
 package com.retrolaza.game.drawable;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,9 +31,9 @@ public class TextField extends Drawable {
 		this.charLimit = charLimit;
 		this.showLine = true;
 		
-		this.text = new Text("", this.x + 10, this.y + 60);
+		this.text = new Text("", this.x + 10, this.y + 40, Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/Pixeled.ttf")));
 		text.setColor(Color.BLACK);
-		text.setSize(60);
+		text.setSize(30);
 		
 		controls = new WritingControls(t -> text.setText(t), this.charLimit);
 		

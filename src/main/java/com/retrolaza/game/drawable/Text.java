@@ -68,6 +68,11 @@ public class Text extends Drawable {
 		this.y = y;
 	}
 	
+	public void setPosition(int x, int y) {
+		setX(x);
+		setY(y);
+	}
+	
 	public String getText() {
 		return text;
 	}
