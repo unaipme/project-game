@@ -38,12 +38,11 @@ public class Table extends Drawable {
 	public Table withRow(Object... rowData) {
 		try {
 			List<Text> row = new ArrayList<>();
-			int currentRows = this.data.size();
 			int xOffset = 0;
 			for (int i=0; i<columns; i++) {
-				Text t = new Text(rowData[i].toString(), x + xOffset + 20, y + (ROW_HEIGHT_DEFAULT * (currentRows + 1) - 20));
+				Text t = new Text(rowData[i].toString(), x + xOffset + 20, y + (ROW_HEIGHT_DEFAULT * (data.size() + 1) - 20));
 				t.setSize(45);
-				if (currentRows % 2 == 1) t.setColor(Color.BLACK);
+				if (data.size() % 2 == 1) t.setColor(Color.BLACK);
 				xOffset += columnWidths.get(i);
 				row.add(t);
 			}
@@ -120,6 +119,10 @@ public class Table extends Drawable {
 			return table;
 		}
 		
+	}
+	
+	public List<List<Text>> getRows() {
+		return data;
 	}
 
 }

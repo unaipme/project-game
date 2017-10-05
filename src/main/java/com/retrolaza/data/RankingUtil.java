@@ -11,6 +11,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.jayway.jsonpath.JsonPath;
@@ -21,6 +23,9 @@ import net.minidev.json.JSONArray;
 public class RankingUtil {
 	
 	private static final String RANKING_ROOT_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/ranking/";
+	private static final String SCORE_URL = "https://r9ovtf8cli.execute-api.eu-west-1.amazonaws.com/alpha/score/";
+	
+	private RankingUtil() {}
 	
 	private static String getJson(String url) throws ClientProtocolException, IOException {
 		HttpClient http = HttpClientBuilder.create().build();
@@ -43,6 +48,13 @@ public class RankingUtil {
 			list.add(new Record().withPosition((Integer) info.get("position")).withScore((Integer) info.get("score")).withUsername(info.get("username").toString()));
 		}
 		return list;
+	}
+	
+	public static void putScore(String username, Integer score) throws ClientProtocolException, IOException {
+		HttpClient http = HttpClientBuilder.create().build();
+		HttpPut request = new HttpPut(SCORE_URL + username + "/" + score);
+		request.addHeader("Content-Type", "application/json");
+		/* HttpResponse response = */ http.execute(request);
 	}
 	
 	public static List<Record> loadRanking() throws UnsupportedOperationException, IOException, PlayerNotFoundException {

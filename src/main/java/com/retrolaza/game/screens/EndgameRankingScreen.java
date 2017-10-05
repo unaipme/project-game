@@ -6,9 +6,11 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.retrolaza.data.RankingUtil;
 import com.retrolaza.data.Record;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.GameScreen;
@@ -17,6 +19,7 @@ import com.retrolaza.game.drawable.Button;
 import com.retrolaza.game.drawable.Table;
 import com.retrolaza.game.drawable.Text;
 import com.retrolaza.game.drawable.TextField;
+import com.retrolaza.game.exception.PlayerNotFoundException;
 
 public class EndgameRankingScreen extends GameScreen {
 	
@@ -56,7 +59,12 @@ public class EndgameRankingScreen extends GameScreen {
 					return;
 				}
 			}
-			System.out.println("AL BACKEND!");
+			try {
+				RankingUtil.putScore(textField.getText(), userScore);
+				table.clear();
+				List<Record> l = RankingUtil.loadRanking();
+				for (Record r : l) table.withRow(r.getPosition(), r.getUsername(), r.getScore());
+			} catch (IOException | UnsupportedOperationException | PlayerNotFoundException e) {}
 		});
 		
 		textField = new TextField(215, 520, 8);
