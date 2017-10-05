@@ -24,9 +24,7 @@ public class SceneryParser {
 		String nextLevel = null;
 		try {
 			nextLevel = JsonPath.read(s, "$.nextLevel");
-		} catch (PathNotFoundException e) {
-			e.printStackTrace();
-		}
+		} catch (PathNotFoundException e) {}
 		double speed = JsonPath.read(s, "$.ballSpeed");
 		List<Object> list = JsonPath.read(s, "$.rows[*]");
 		list.forEach(l -> {
