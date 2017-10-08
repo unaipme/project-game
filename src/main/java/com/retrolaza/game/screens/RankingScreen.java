@@ -16,6 +16,11 @@ import com.retrolaza.game.drawable.Text;
 import com.retrolaza.game.drawable.TextField;
 import com.retrolaza.game.exception.PlayerNotFoundException;
 
+/**
+ * Pantalla a la que se accede cuando el jugador elige "Ranking-a" desde el menú principal. Muestra el ranking y permite buscar un nombre de jugador para mostrar su posición en el ranking.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class RankingScreen extends GameScreen {
 	
 	private KeyboardControls controls;

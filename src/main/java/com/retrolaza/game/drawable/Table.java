@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase que representa una tabla que muestra información. Para crearla deberá usarse el método estático {@see #create(int, int, int)}. Al momento de crear la tabla se deben definir cuántas columnas tendrá, y cuánta anchura tendrán cada una de ellas.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class Table extends Drawable {
 	
 	private List<List<Text>> data;
@@ -27,14 +32,31 @@ public class Table extends Drawable {
 		this.columns = columns;
 	}
 	
+	/**
+	 * Devuelve una instancia de la clase {@see com.retrolaza.game.drawable.Table.Builder}, la cual facilita la creación de la tabla.
+	 * @param x Posición X en la cual se colocará la tabla
+	 * @param y Posición Y en la cual se colocará la tabla
+	 * @param columns Cantidad de columnas
+	 * @return
+	 */
 	public static Table.Builder create(int x, int y, int columns) {
 		return new Builder(x, y, columns);
 	}
 	
+	/**
+	 * Permite definir o sobreescribir la anchura de una columna concreta
+	 * @param column El número de la columna, siendo 0 la primera.
+	 * @param width La nueva anchura.
+	 */
 	public void setWidthForColumn(int column, int width) {
 		columnWidths.put(column, width);
 	}
 	
+	/**
+	 * Método que permite la creación de una nueva fila de información
+	 * @param rowData
+	 * @return La misma tabla, para permitir la concatenación de funciones y, así, hacer más fácil la creación de estas.
+	 */
 	public Table withRow(Object... rowData) {
 		try {
 			List<Text> row = new ArrayList<>();
@@ -81,20 +103,40 @@ public class Table extends Drawable {
 		}
 	}
 	
+	/**
+	 * Vacía el contenido de la tabla
+	 */
 	public void clear() {
 		data.clear();
 	}
 	
+	/**
+	 * Comprueba si el existe, en alguna fila, el valor dado en la columna señalada
+	 * @param col Columna en la que buscar
+	 * @param value Valor buscado
+	 * @return Booleano que indica si se ha encontrado el valor
+	 */
 	public boolean contains(Integer col, String value) {
 		return data.get(col).stream().anyMatch(t -> value.equals(t.getText()));
 	}
 	
-	public List<Text> getRowWith(String value, Integer col) {
+	/**
+	 * Devuelve la fila cuya columna tenga el valor señalado
+	 * @param col Columna en la que buscar
+	 * @param value Valor que buscar
+	 * @return La fila que coincida con el criterio de búsqueda
+	 */
+	public List<Text> getRowWith(Integer col, String value) {
 		return data.stream().filter(t -> {
 			return value.toLowerCase().equals(t.get(col).getText().toLowerCase());
 		}).findFirst().orElse(null);
 	}
 	
+	/**
+	 * Clase que ayuda a construir la tabla, recibiendo la anchura que van a tener las columnas antes de que se cree la table como tal. Hay un ejemplo en la clase {@see com.retrolaza.game.screens.RankingScreen#RankingScreen(com.retrolaza.game.Game, com.retrolaza.game.screens.MainScreen)}
+	 * @author Unai P. Mendizabal (@unaipme)
+	 *
+	 */
 	public static class Builder {
 		
 		private Table table;
@@ -104,14 +146,25 @@ public class Table extends Drawable {
 			this.table = new Table(x, y, columns);
 		}
 		
+		/**
+		 * Establecer anchura de la columna que se especificará a continuación con el método {@see #inColumn(int)}. Debe llamarse a este método antes que a {@see #inColumn(int)}.
+		 * @param width
+		 * @return
+		 */
 		public Builder withWidth(int width) {
 			this.tempWidth = width;
 			return this;
 		}
 		
+		/**
+		 * Define a qué columna asignar la anchura recién establecida.
+		 * @param column
+		 * @return
+		 */
 		public Builder inColumn(int column) {
 			if (tempWidth == -1) throw new RuntimeException("Ez da zabalera definitu");
 			table.setWidthForColumn(column, tempWidth);
+			tempWidth = -1;
 			return this;
 		}
 		

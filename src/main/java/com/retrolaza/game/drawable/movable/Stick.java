@@ -7,6 +7,11 @@ import java.awt.event.KeyEvent;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.controls.MovableController;
 
+/**
+ * Clase que representa el palo o stick que el jugador controla durante el juego
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class Stick extends Movable {
 	
 	public static final int WIDTH = 120;
@@ -15,7 +20,7 @@ public class Stick extends Movable {
 	public Stick(int x, int y) {
 		super(x, y, HEIGHT, WIDTH);
 		
-		controls = new MovableController<>(this);
+		controls = new MovableController();
 	}
 	
 	@Override

@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,6 +20,11 @@ import com.retrolaza.game.drawable.Text;
 import com.retrolaza.game.drawable.TextField;
 import com.retrolaza.game.exception.PlayerNotFoundException;
 
+/**
+ * Pantalla que se muestra tras la pantalla de juego terminado o juego completado si el jugador ha entrado en el ranking, y que concede la opción de guardar la puntuación en éste.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class EndgameRankingScreen extends GameScreen {
 	
 	private KeyboardControls controls;
@@ -34,6 +38,7 @@ public class EndgameRankingScreen extends GameScreen {
 	private Timer errorTimer;
 	
 	private Integer userScore;
+	private boolean isSubmitable;
 	
 	public static final int DR_TEXT_FIELD = Game.ID.getAndIncrement();
 	public static final int DR_TABLE = Game.ID.getAndIncrement();
@@ -45,26 +50,32 @@ public class EndgameRankingScreen extends GameScreen {
 		super(g, parent);
 		setBackground("res/img/background.png");
 		
+		this.isSubmitable = true;
+		
 		controls = new KeyboardControls(this);
 		controls.when(KeyEvent.VK_ESCAPE).then(s -> {
 			s.hide();
 			s.getParent().show();
 		});
 		controls.when(KeyEvent.VK_ENTER).then(s -> {
-			List<Text> row = table.getRowWith(textField.getText(), 1);
-			if (row != null ) {
-				Integer existingScore = Integer.parseInt(row.get(2).getText());
-				if (existingScore >= userScore) {
-					createErrorText("Sartutako erabiltzaileak puntuazio hobea edo bera du jada");
-					return;
+			if (isSubmitable) {
+				List<Text> row = table.getRowWith(1, textField.getText());
+				if (row != null ) {
+					Integer existingScore = Integer.parseInt(row.get(2).getText());
+					if (existingScore >= userScore) {
+						createErrorText("Sartutako erabiltzaileak puntuazio hobea edo bera du jada");
+						return;
+					}
 				}
+				try {
+					RankingUtil.putScore(textField.getText().toLowerCase(), userScore);
+					table.clear();
+					List<Record> l = RankingUtil.loadRanking();
+					for (Record r : l) table.withRow(r.getPosition(), r.getUsername(), r.getScore());
+					button.hide();
+					isSubmitable = false;
+				} catch (IOException | UnsupportedOperationException | PlayerNotFoundException e) {}
 			}
-			try {
-				RankingUtil.putScore(textField.getText(), userScore);
-				table.clear();
-				List<Record> l = RankingUtil.loadRanking();
-				for (Record r : l) table.withRow(r.getPosition(), r.getUsername(), r.getScore());
-			} catch (IOException | UnsupportedOperationException | PlayerNotFoundException e) {}
 		});
 		
 		textField = new TextField(215, 520, 8);

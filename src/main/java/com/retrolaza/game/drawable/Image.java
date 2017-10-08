@@ -8,6 +8,11 @@ import javax.imageio.ImageIO;
 
 import com.retrolaza.game.Game;
 
+/**
+ * Clase que representa una imagen (no animada) reescalable.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class Image extends Drawable {
 
 	private java.awt.Image image;
@@ -47,6 +52,12 @@ public class Image extends Drawable {
 		setY(y);
 	}
 	
+	/**
+	 * Reescala la imagen
+	 * @param width Establece el nuevo ancho de la imagen. Si es -1, se mantiene en proporción dependiendo de la altura establecida.
+	 * @param height Establece el nuevo alto de la imagen. Si es -1, se mantiene en proporción dependiendo de la anchura establecida.
+	 * @param hints Modo en el que reescalar la imagen. Se espera uno de los valores estáticos de esta clase
+	 */
 	public void scale(int width, int height, int hints) {
 		image = image.getScaledInstance(width, height, hints);
 	}

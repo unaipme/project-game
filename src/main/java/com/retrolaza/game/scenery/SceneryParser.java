@@ -13,6 +13,11 @@ import com.retrolaza.game.scenery.drawable.Brick;
 import com.retrolaza.game.scenery.drawable.BrickRow;
 import com.retrolaza.game.scenery.drawable.Scenery;
 
+/**
+ * Clase que carga el nivel y todos sus elementos a partir del archivo JSON definido.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class SceneryParser {
 	
 	@SuppressWarnings("unchecked")

@@ -12,6 +12,11 @@ import java.util.TimerTask;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.controls.WritingControls;
 
+/**
+ * Clase que representa un campo de texto que se puede rellenar usando el teclado.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class TextField extends Drawable {
 	
 	private Text text;
@@ -25,6 +30,13 @@ public class TextField extends Drawable {
 	
 	public static final int DR_TEXT = Game.ID.getAndIncrement();
 	
+	/**
+	 * @param x Posición X en el cual dibujar el campo de texto.
+	 * @param y Posición Y en el cual dibujar el campo de texto.
+	 * @param charLimit Límite de caracteres que se puede escribir en el campo.
+	 * @throws FontFormatException
+	 * @throws IOException
+	 */
 	public TextField(int x, int y, int charLimit) throws FontFormatException, IOException {
 		this.x = x;
 		this.y = y;

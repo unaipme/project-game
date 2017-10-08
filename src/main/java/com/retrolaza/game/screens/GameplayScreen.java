@@ -20,6 +20,11 @@ import com.retrolaza.game.drawable.movable.Stick;
 import com.retrolaza.game.scenery.SceneryParser;
 import com.retrolaza.game.scenery.drawable.Scenery;
 
+/**
+ * Pantalla en la cual se lleva a cabo el mismo juego. El jugador controla el stick para evitar que la bola salga de la pantalla por la parte inferior y para romper los ladrillos.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class GameplayScreen extends GameScreen {
 	
 	private KeyboardControls gameControls;

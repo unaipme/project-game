@@ -4,6 +4,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.function.Consumer;
 
+/**
+ * Implementación de {@see java.awt.event.KeyListener} especializada en recibir el input para crear un texto escrito, con la cantidad de caracteres que se defina.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class WritingControls implements KeyListener {
 	
 	private String writtenText;
@@ -21,7 +26,10 @@ public class WritingControls implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 		return;
 	}
-
+	
+	/**
+	 * Método que se ejecuta automáticamente cuando se pulsa una tecla. Si la tecla corresponde a una letra del abecedario, la añade al texto.
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {

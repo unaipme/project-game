@@ -7,10 +7,18 @@ import java.util.List;
 import com.retrolaza.game.controls.MovableController;
 import com.retrolaza.game.drawable.Drawable;
 
+/**
+ * Clase abstracta que define el comportamiento y atributos estándares de los objetos dibujables que además tengan un componente de movimiento. 
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public abstract class Movable extends Drawable {
 	
-	protected MovableController<? extends Movable> controls;
+	protected MovableController controls;
 	
+	/**
+	 * Lista de todos los otros elementos movibles contra los cuales el elemento actual tenga que colisionar.
+	 */
 	private List<Movable> collisionables;
 	
 	private double speedX;
@@ -62,7 +70,7 @@ public abstract class Movable extends Drawable {
 		this.y = y;
 	}
 	
-	public MovableController<? extends Movable> getControlls() {
+	public MovableController getControlls() {
 		return controls;
 	}
 	

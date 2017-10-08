@@ -9,6 +9,11 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+/**
+ * Clase mediante la cual manejar archivos de música (.wav)
+ * @author Unai P. Mendizabal (@unaipme) y Xabier Jauregi (@jaure96)
+ *
+ */
 public class Music {
 	
 	private Clip clip;
@@ -19,24 +24,41 @@ public class Music {
 		clip.open(ais);
 	}
 	
+	/**
+	 * Método que configura la canción para repetirse en un bucle indefinido.
+	 * @return El mismo objeto
+	 */
 	public Music unlimitedLoop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		return this;
 	}
 	
+	/**
+	 * Método que configura la canción para reproducirse una sola vez
+	 * @return El mismo objeto
+	 */
 	public Music playOnce() {
 		clip.loop(0);
 		return this;
 	}
 	
+	/**
+	 * Método para detener la reproducción de la canción
+	 */
 	public void stop() {
 		if (clip.isRunning()) clip.stop();
 	}
 	
+	/**
+	 * Método para comenzar la reproducción de la canción
+	 */
 	public void start() {
 		if (!clip.isRunning()) clip.start();
 	}
 	
+	/**
+	 * Método para restablecer la canción al principio de ésta.
+	 */
 	public void reset() {
 		clip.setMicrosecondPosition(0);
 	}

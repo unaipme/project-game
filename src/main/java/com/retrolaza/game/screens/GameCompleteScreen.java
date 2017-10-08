@@ -14,6 +14,11 @@ import com.retrolaza.game.drawable.Button;
 import com.retrolaza.game.drawable.Text;
 import com.retrolaza.game.exception.PlayerNotFoundException;
 
+/**
+ * Pantalla de juego completado, es decir, que se muestra cuando no quedan más escenarios que superar.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class GameCompleteScreen extends GameScreen {
 	
 	private KeyboardControls controls;

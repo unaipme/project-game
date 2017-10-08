@@ -13,6 +13,11 @@ import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Menu;
 import com.retrolaza.game.drawable.Text;
 
+/**
+ * Pantalla del menú principal que se muestra nada más abrir el juego.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class MainScreen extends GameScreen {
 	
 	private Menu menu;

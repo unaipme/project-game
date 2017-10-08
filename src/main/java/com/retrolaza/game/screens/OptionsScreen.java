@@ -12,6 +12,11 @@ import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Menu;
 import com.retrolaza.game.drawable.Text;
 
+/**
+ * Pantalla que se muestra cuando el jugador selecciona "Aukerak" en el menú principal. En esta pantalla se puede elegir entre 4 canciones diferentes o el silencio.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class OptionsScreen extends GameScreen {
 	
 	private KeyboardControls controls;

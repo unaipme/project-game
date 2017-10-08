@@ -6,6 +6,11 @@ import java.util.List;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.drawable.Drawable;
 
+/**
+ * Clase que representa una fila de ladrillos.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class BrickRow extends Drawable {
 	
 	private int row;

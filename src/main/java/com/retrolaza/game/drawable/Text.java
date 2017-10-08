@@ -7,6 +7,11 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Clase que representa un simple texto en pantalla.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class Text extends Drawable {
 	
 	private String text;

@@ -15,6 +15,11 @@ import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Text;
 import com.retrolaza.game.exception.PlayerNotFoundException;
 
+/**
+ * Pantalla de juego terminado (game over), que se muestra cuando al jugador no le quedan más vidas.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class GameOverScreen extends GameScreen {
 	
 	private KeyboardControls controls;

@@ -11,6 +11,11 @@ import java.util.TimerTask;
 import com.retrolaza.game.Game;
 import com.retrolaza.game.scenery.drawable.Brick;
 
+/**
+ * Clase que representa la bola y calcula sus respuestas físicas (colisiones) respecto a la pantalla y los otros elementos relevantes.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class Ball extends Movable {
 	
 	private static final int DIAMETER = 20;
@@ -29,10 +34,17 @@ public class Ball extends Movable {
 		return totalSpeed;
 	}
 
+	/**
+	 * La velocidad total es el módulo de la velocidad en X y la velocidad en Y, es decir vx^2 + vy^2 = vt^2. A partir de esta velocidad total se calcula la velocidad en cada eje.
+	 * @param totalSpeed Velocidad total
+	 */
 	public void setTotalSpeed(double totalSpeed) {
 		this.totalSpeed = Math.sqrt(2 * Math.pow(totalSpeed, 2));
 	}
 	
+	/**
+	 * Método que calcula la respuesta física
+	 */
 	private void calculatePhysics() {
 		if (getX() + getWidth() + getSpeedX() > Game.SCREEN_WIDTH || getX() + getSpeedX() < 0) setSpeedX(getSpeedX() * -1);
 		if (getY() + getSpeedY() <= 80) setSpeedY(getSpeedY() * -1);
@@ -98,6 +110,10 @@ public class Ball extends Movable {
 		g2d.drawOval((int) getX(), (int) getY(), getWidth(), getHeight());
 	}
 	
+	/**
+	 * Define la respuesta que se tendrá cuando la bola detecte que se ha perdido una vida.
+	 * @param runnable Reacción a tomar
+	 */
 	public void setLifeLostListener(Runnable runnable) {
 		this.lifeLostListener = runnable;
 	}
@@ -108,6 +124,10 @@ public class Ball extends Movable {
 		}
 	}
 	
+	/**
+	 * Define la respuesta que se tendrá cuando la bola no tenga ya ladrillos que romper
+	 * @param runnable Reacción a tomar.
+	 */
 	public void setNoMoreBricksListener(Runnable runnable) {
 		this.noMoreBricksListener = runnable;
 	}
@@ -123,6 +143,10 @@ public class Ball extends Movable {
 		setSpeedY(totalSpeed);
 	}
 	
+	/**
+	 * Hace posible los 3 segundos de espera que tiene la bola al empezar una partida
+	 * @return
+	 */
 	public Timer makeWait() {
 		TimerTask task = new TimerTask() {
 			@Override
@@ -135,6 +159,9 @@ public class Ball extends Movable {
 		return timer;
 	}
 
+	/**
+	 * Hace que la bola se detenga.
+	 */
 	public void stop() {
 		setSpeedX(0);
 		setSpeedY(0);

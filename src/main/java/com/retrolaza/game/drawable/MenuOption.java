@@ -8,10 +8,14 @@ import java.io.IOException;
 
 import com.retrolaza.game.Game;
 
+/**
+ * Clase que representa una opción única de un menú. No debe usarse si no es mediante un objeto de la clase {@see com.retrolaza.game.drawable.Menu}.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class MenuOption extends Drawable {
 	
 	private Text text;
-	//private boolean selected = false;
 	
 	private final static int DR_TEXT = Game.ID.getAndIncrement();
 	

@@ -1,5 +1,10 @@
 package com.retrolaza.data;
 
+/**
+ * Clase que representa una entrada del ranking, con su respectivo nombre de usuario, posición y puntuación
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class Record {
 	private String username;
 	private Integer position;

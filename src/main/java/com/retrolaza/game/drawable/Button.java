@@ -10,6 +10,11 @@ import java.util.Optional;
 
 import com.retrolaza.game.Game;
 
+/**
+ * Clase que representa un botón rectangular de bordes negros y fondo blanco con un texto y, a ser posible, una imagen a su izquierda.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class Button extends Drawable {
 	
 	private Text text;
@@ -21,6 +26,15 @@ public class Button extends Drawable {
 	private Game game;
 	private Image image;
 	
+	/**
+	 * 
+	 * @param text Texto que contendrá el botón
+	 * @param game Referencia al juego
+	 * @param x Posición X en el que se mostrará el botón
+	 * @param y Posición Y en el que se mostrará el botón
+	 * @throws FontFormatException
+	 * @throws IOException
+	 */
 	public Button(String text, Game game, int x, int y) throws FontFormatException, IOException {
 		this.game = game;
 		setPosition(x, y);
@@ -45,6 +59,11 @@ public class Button extends Drawable {
 		}
 	}
 	
+	/**
+	 * Método para definir la imagen que se usará
+	 * @param s Ruta a la imagen
+	 * @throws IOException
+	 */
 	public void setImage(String s) throws IOException {
 		this.image = new Image(s, game, x + 10, y + 5);
 		text.setX(x + text.getText().length() + 55);
@@ -56,10 +75,19 @@ public class Button extends Drawable {
 		return width;
 	}
 	
+	/**
+	 * Método para añadir (o restar) anchura al botón cuando la anchura automática no es correcta
+	 * @param diff Diferencia de anchura a sumar (si es menor que cero, se resta anchura)
+	 */
 	public void addToWidth(int diff) {
 		this.width += diff;
 	}
 	
+	/**
+	 * Método para redefinir la posición en el que se mostrará el botón.
+	 * @param x
+	 * @param y
+	 */
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;

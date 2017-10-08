@@ -1,0 +1,10 @@
+com.retrolaza.data
+com.retrolaza.game
+com.retrolaza.game.audio
+com.retrolaza.game.controls
+com.retrolaza.game.drawable
+com.retrolaza.game.drawable.movable
+com.retrolaza.game.exception
+com.retrolaza.game.scenery
+com.retrolaza.game.scenery.drawable
+com.retrolaza.game.screens

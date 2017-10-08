@@ -12,6 +12,11 @@ import com.retrolaza.game.drawable.Image;
 import com.retrolaza.game.drawable.Menu;
 import com.retrolaza.game.drawable.Text;
 
+/**
+ * Pantalla que se muestra cuando en el menú principal se selecciona la opción de jugar, en la cual se muestran las diferentes dificultades del juego.
+ * @author Unai P. Mendizabal (@unaipme)
+ *
+ */
 public class DifficultySelectorScreen extends GameScreen {
 	
 	private KeyboardControls controls;
@@ -87,7 +92,7 @@ public class DifficultySelectorScreen extends GameScreen {
 		controls.when(KeyEvent.VK_ENTER).then(gs -> {
 			self.hide();
 			self.getGameScreen().show();
-			self.getGameScreen().setScore(20);
+			self.getGameScreen().setScore(10);
 			String chosenGame;
 			switch (self.getMenu().getSelectedOption()) {
 			case 0:
